@@ -186,7 +186,7 @@ export const UserPromptOptimizerSection: React.FC<
       })) ?? [],
       clarifyingQuestions: diagnosis?.clarifyingQuestions?.map(q => ({
         question: q,
-        category: 'General',
+        category: t('category'),
       })) ?? [],
       privacyWarnings: diagnosis?.privacyWarning ? [diagnosis.privacyWarning] : [],
       assumptions: Array.isArray(analysisData.assumptions) ? analysisData.assumptions as string[] : [],
@@ -365,7 +365,7 @@ export const UserPromptOptimizerSection: React.FC<
     } catch {
       // Fallback to string analysis
       return (
-        <Card title={'Analysis'}>
+        <Card title={t('analysisAndDiagnosis')}>
           <div className="text-sm text-gray-300 whitespace-pre-line">
             {String(optimizerResponse.analysis)}
           </div>
@@ -707,6 +707,7 @@ export const UserPromptOptimizerSection: React.FC<
                 onVariantChange={(variant) => {
                   setSelectedVariant(variant.platform);
                 }}
+                language={language}
               />
             )}
 
@@ -716,6 +717,7 @@ export const UserPromptOptimizerSection: React.FC<
                 original={userInput}
                 optimized={currentPrompt}
                 onCopyOptimized={handleCopy}
+                uiLanguage={language}
               />
             ) : (
               <div className="flex-grow bg-gray-900 rounded-xl border border-gray-700 p-6 relative min-h-[300px] shadow-inner">
@@ -751,7 +753,7 @@ export const UserPromptOptimizerSection: React.FC<
 
       {/* Analysis Section - using DiagnosisCard */}
       {diagnosisData && (
-        <DiagnosisCard diagnosis={diagnosisData} />
+        <DiagnosisCard diagnosis={diagnosisData} language={language} />
       )}
 
       {/* History Section */}

@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
   SparklesIcon,
 } from '@/components/ui/Icons';
+import { useTranslation, type Language } from '@/hooks/useLanguage';
 
 export interface GuidedModeData {
   context: string;
@@ -18,6 +19,7 @@ export interface GuidedModeWizardProps {
   onComplete: (data: GuidedModeData) => void;
   onCancel: () => void;
   initialData?: Partial<GuidedModeData>;
+  language?: Language;
 }
 
 type WizardStep =
@@ -29,115 +31,118 @@ type WizardStep =
   | 'format'
   | 'review';
 
-const STEP_CONFIG: Record<
-  WizardStep,
-  { title: string; description: string; field: keyof GuidedModeData }
-> = {
-  context: {
-    title: 'Context & Background',
-    description: 'Provide context about what you want to accomplish',
-    field: 'context',
-  },
-  audience: {
-    title: 'Target Audience',
-    description: 'Who will receive or use this prompt?',
-    field: 'audience',
-  },
-  tone: {
-    title: 'Tone & Style',
-    description: 'What tone should the optimized prompt have?',
-    field: 'tone',
-  },
-  constraints: {
-    title: 'Constraints & Limitations',
-    description: 'Any limitations or requirements to consider',
-    field: 'constraints',
-  },
-  language: {
-    title: 'Language Preference',
-    description: 'Which language should the output use?',
-    field: 'language',
-  },
-  format: {
-    title: 'Output Format',
-    description: 'How should the response be structured?',
-    field: 'outputFormat',
-  },
-  review: {
-    title: 'Review Your Choices',
-    description: 'Review your selections before finalizing',
-    field: 'context',
-  },
-};
-
-const TONE_OPTIONS = [
-  {
-    value: 'professional',
-    label: 'Professional',
-    color: 'bg-blue-500/20 border-blue-500/40 text-blue-300',
-  },
-  {
-    value: 'casual',
-    label: 'Casual',
-    color: 'bg-green-500/20 border-green-500/40 text-green-300',
-  },
-  {
-    value: 'formal',
-    label: 'Formal',
-    color: 'bg-purple-500/20 border-purple-500/40 text-purple-300',
-  },
-  {
-    value: 'friendly',
-    label: 'Friendly',
-    color: 'bg-yellow-500/20 border-yellow-500/40 text-yellow-300',
-  },
-  {
-    value: 'technical',
-    label: 'Technical',
-    color: 'bg-cyan-500/20 border-cyan-500/40 text-cyan-300',
-  },
-  {
-    value: 'creative',
-    label: 'Creative',
-    color: 'bg-pink-500/20 border-pink-500/40 text-pink-300',
-  },
-];
-
-const LANGUAGE_OPTIONS = [
-  { value: 'english', label: 'English' },
-  { value: 'arabic', label: 'Arabic (العربية)' },
-  { value: 'spanish', label: 'Spanish (Español)' },
-  { value: 'french', label: 'French (Français)' },
-  { value: 'german', label: 'German (Deutsch)' },
-  { value: 'chinese', label: 'Chinese (中文)' },
-  { value: 'japanese', label: 'Japanese (日本語)' },
-  { value: 'korean', label: 'Korean (한국어)' },
-];
-
-const FORMAT_OPTIONS = [
-  { value: 'paragraph', label: 'Paragraph', icon: '¶' },
-  { value: 'bullet', label: 'Bullet Points', icon: '•' },
-  { value: 'numbered', label: 'Numbered List', icon: '1.' },
-  { value: 'table', label: 'Table', icon: '▦' },
-  { value: 'code', label: 'Code Block', icon: '</>' },
-  { value: 'json', label: 'JSON', icon: '{}' },
-];
-
-const STEPS: WizardStep[] = [
-  'context',
-  'audience',
-  'tone',
-  'constraints',
-  'language',
-  'format',
-  'review',
-];
-
 export const GuidedModeWizard: React.FC<GuidedModeWizardProps> = ({
   onComplete,
   onCancel,
   initialData = {} as Partial<GuidedModeData>,
+  language = 'en',
 }) => {
+  const { t } = useTranslation(language);
+
+  const STEP_CONFIG = useMemo<Record<
+    WizardStep,
+    { title: string; description: string; field: keyof GuidedModeData }
+  >>(() => ({
+    context: {
+      title: t('provideContext'),
+      description: t('whatWouldYouLike'),
+      field: 'context',
+    },
+    audience: {
+      title: t('targetAudience'),
+      description: t('generalAudience'),
+      field: 'audience',
+    },
+    tone: {
+      title: t('tone'),
+      description: t('professional'),
+      field: 'tone',
+    },
+    constraints: {
+      title: t('constraintsOrRequirements'),
+      description: t('selectConstraints'),
+      field: 'constraints',
+    },
+    language: {
+      title: t('languagePreference'),
+      description: t('selectLanguage'),
+      field: 'language',
+    },
+    format: {
+      title: t('outputFormatOption'),
+      description: t('selectOutputFormat'),
+      field: 'outputFormat',
+    },
+    review: {
+      title: t('reviewYourChoices'),
+      description: t('reviewSelections'),
+      field: 'context',
+    },
+  }), [t]);
+
+  const TONE_OPTIONS = useMemo(() => [
+    {
+      value: 'professional',
+      label: t('professional'),
+      color: 'bg-blue-500/20 border-blue-500/40 text-blue-300',
+    },
+    {
+      value: 'casual',
+      label: t('casual'),
+      color: 'bg-green-500/20 border-green-500/40 text-green-300',
+    },
+    {
+      value: 'formal',
+      label: t('formal'),
+      color: 'bg-purple-500/20 border-purple-500/40 text-purple-300',
+    },
+    {
+      value: 'friendly',
+      label: t('friendly'),
+      color: 'bg-yellow-500/20 border-yellow-500/40 text-yellow-300',
+    },
+    {
+      value: 'technical',
+      label: t('technical'),
+      color: 'bg-cyan-500/20 border-cyan-500/40 text-cyan-300',
+    },
+    {
+      value: 'creative',
+      label: t('creative'),
+      color: 'bg-pink-500/20 border-pink-500/40 text-pink-300',
+    },
+  ], [t]);
+
+  const LANGUAGE_OPTIONS = useMemo(() => [
+    { value: 'english', label: t('english') },
+    { value: 'arabic', label: t('arabic') },
+  ], [t]);
+
+  const FORMAT_OPTIONS = useMemo(() => [
+    { value: 'paragraph', label: t('paragraph'), icon: '¶' },
+    { value: 'bullet', label: t('bulletLabel'), icon: '•' },
+    { value: 'numbered', label: t('numberedLabel'), icon: '1.' },
+    { value: 'table', label: t('table'), icon: '▦' },
+    { value: 'code', label: t('codeBlock'), icon: '</>' },
+  ], [t]);
+
+  const STEPS: WizardStep[] = [
+    'context',
+    'audience',
+    'tone',
+    'constraints',
+    'language',
+    'format',
+    'review',
+  ];
+
+  const AUDIENCE_OPTIONS = useMemo(() => [
+    { value: t('generalAudience'), label: t('generalPublic') },
+    { value: t('technicalProfessionals'), label: t('technicalProfessionals') },
+    { value: t('businessExecutives'), label: t('businessExecutives') },
+    { value: t('studentsLearners'), label: t('studentsLearners') },
+  ], [t]);
+
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [formData, setFormData] = useState<GuidedModeData>({
     context: initialData.context || '',
@@ -194,42 +199,33 @@ export const GuidedModeWizard: React.FC<GuidedModeWizardProps> = ({
             <textarea
               value={formData.context}
               onChange={(e) => updateField('context', e.target.value)}
-              placeholder="e.g., I need to write a professional email to a client about a project delay..."
+              placeholder={t('socialMediaMarketing')}
               className="w-full h-40 p-4 bg-gray-900 border border-gray-700 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent text-gray-100 placeholder-gray-500 text-sm leading-relaxed resize-none"
             />
             <div className="flex flex-wrap gap-2">
               <button
                 onClick={() =>
-                  updateField(
-                    'context',
-                    'I need to create content for social media marketing',
-                  )
+                  updateField('context', t('socialMediaMarketing'))
                 }
                 className="px-3 py-1.5 text-xs bg-gray-700/50 border border-gray-600 text-gray-300 rounded-lg hover:bg-gray-600 hover:text-white transition-all"
               >
-                Social Media Content
+                {t('socialMediaMarketing')}
               </button>
               <button
                 onClick={() =>
-                  updateField(
-                    'context',
-                    'I need to write a business email or professional communication',
-                  )
+                  updateField('context', t('businessEmail'))
                 }
                 className="px-3 py-1.5 text-xs bg-gray-700/50 border border-gray-600 text-gray-300 rounded-lg hover:bg-gray-600 hover:text-white transition-all"
               >
-                Business Email
+                {t('businessEmail')}
               </button>
               <button
                 onClick={() =>
-                  updateField(
-                    'context',
-                    'I need help with coding or technical documentation',
-                  )
+                  updateField('context', t('codingTechnical'))
                 }
                 className="px-3 py-1.5 text-xs bg-gray-700/50 border border-gray-600 text-gray-300 rounded-lg hover:bg-gray-600 hover:text-white transition-all"
               >
-                Technical Help
+                {t('codingTechnical')}
               </button>
             </div>
           </div>
@@ -241,16 +237,11 @@ export const GuidedModeWizard: React.FC<GuidedModeWizardProps> = ({
             <textarea
               value={formData.audience}
               onChange={(e) => updateField('audience', e.target.value)}
-              placeholder="e.g., Software developers with intermediate Python knowledge..."
+              placeholder={t('selectYourAudience')}
               className="w-full h-32 p-4 bg-gray-900 border border-gray-700 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent text-gray-100 placeholder-gray-500 text-sm leading-relaxed resize-none"
             />
             <div className="grid grid-cols-2 gap-2">
-              {[
-                { value: 'General audience', label: 'General Public' },
-                { value: 'Technical professionals', label: 'Technical' },
-                { value: 'Business executives', label: 'Executives' },
-                { value: 'Students or learners', label: 'Students' },
-              ].map((option) => (
+              {AUDIENCE_OPTIONS.map((option) => (
                 <button
                   key={option.label}
                   onClick={() => updateField('audience', option.value)}
@@ -290,39 +281,25 @@ export const GuidedModeWizard: React.FC<GuidedModeWizardProps> = ({
             <textarea
               value={formData.constraints}
               onChange={(e) => updateField('constraints', e.target.value)}
-              placeholder="e.g., Keep it under 200 words, avoid jargon, include examples..."
+              placeholder={t('selectConstraints')}
               className="w-full h-40 p-4 bg-gray-900 border border-gray-700 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent text-gray-100 placeholder-gray-500 text-sm leading-relaxed resize-none"
             />
             <div className="flex flex-wrap gap-2">
               <button
                 onClick={() =>
-                  updateField('constraints', 'Keep it concise and to the point')
+                  updateField('constraints', t('keepItConcise'))
                 }
                 className="px-3 py-1.5 text-xs bg-gray-700/50 border border-gray-600 text-gray-300 rounded-lg hover:bg-gray-600 hover:text-white transition-all"
               >
-                Be Concise
+                {t('keepItConcise')}
               </button>
               <button
                 onClick={() =>
-                  updateField(
-                    'constraints',
-                    'Provide detailed explanations with examples',
-                  )
+                  updateField('constraints', t('provideDetailedExplanations'))
                 }
                 className="px-3 py-1.5 text-xs bg-gray-700/50 border border-gray-600 text-gray-300 rounded-lg hover:bg-gray-600 hover:text-white transition-all"
               >
-                Detailed with Examples
-              </button>
-              <button
-                onClick={() =>
-                  updateField(
-                    'constraints',
-                    'Use simple language, avoid technical jargon',
-                  )
-                }
-                className="px-3 py-1.5 text-xs bg-gray-700/50 border border-gray-600 text-gray-300 rounded-lg hover:bg-gray-600 hover:text-white transition-all"
-              >
-                Simple Language
+                {t('provideDetailedExplanations')}
               </button>
             </div>
           </div>
@@ -378,23 +355,23 @@ export const GuidedModeWizard: React.FC<GuidedModeWizardProps> = ({
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
                   <span className="text-gray-500 text-xs uppercase font-bold">
-                    Context
+                    {t('selectYourGoal')}
                   </span>
                   <p className="text-gray-300 mt-1">
-                    {formData.context || 'Not specified'}
+                    {formData.context || t('notSpecified')}
                   </p>
                 </div>
                 <div>
                   <span className="text-gray-500 text-xs uppercase font-bold">
-                    Audience
+                    {t('targetAudience')}
                   </span>
                   <p className="text-gray-300 mt-1">
-                    {formData.audience || 'Not specified'}
+                    {formData.audience || t('notSpecified')}
                   </p>
                 </div>
                 <div>
                   <span className="text-gray-500 text-xs uppercase font-bold">
-                    Tone
+                    {t('tone')}
                   </span>
                   <p className="text-teal-300 mt-1 capitalize">
                     {formData.tone}
@@ -402,7 +379,7 @@ export const GuidedModeWizard: React.FC<GuidedModeWizardProps> = ({
                 </div>
                 <div>
                   <span className="text-gray-500 text-xs uppercase font-bold">
-                    Language
+                    {t('language')}
                   </span>
                   <p className="text-gray-300 mt-1 capitalize">
                     {formData.language}
@@ -411,14 +388,14 @@ export const GuidedModeWizard: React.FC<GuidedModeWizardProps> = ({
                 {formData.constraints && (
                   <div className="col-span-2">
                     <span className="text-gray-500 text-xs uppercase font-bold">
-                      Constraints
+                      {t('selectConstraints')}
                     </span>
                     <p className="text-gray-300 mt-1">{formData.constraints}</p>
                   </div>
                 )}
                 <div className="col-span-2">
                   <span className="text-gray-500 text-xs uppercase font-bold">
-                    Output Format
+                    {t('outputFormatOption')}
                   </span>
                   <p className="text-emerald-300 mt-1 capitalize">
                     {formData.outputFormat}
@@ -430,8 +407,7 @@ export const GuidedModeWizard: React.FC<GuidedModeWizardProps> = ({
               <p className="text-xs text-teal-300 flex items-center gap-2">
                 <SparklesIcon className="w-4 h-4 flex-shrink-0" />
                 <span>
-                  These preferences will be used to customize your optimized
-                  prompt.
+                  {t('reviewSelections')}
                 </span>
               </p>
             </div>
@@ -449,7 +425,7 @@ export const GuidedModeWizard: React.FC<GuidedModeWizardProps> = ({
       <div className="mb-6">
         <div className="flex justify-between items-center mb-2">
           <span className="text-xs font-medium text-gray-400">
-            Step {currentStepIndex + 1} of {STEPS.length}
+            {t('stepOf')} {currentStepIndex + 1} {t('of')} {STEPS.length}
           </span>
           <span className="text-xs font-medium text-teal-300">
             {Math.round(progress)}%
@@ -480,7 +456,7 @@ export const GuidedModeWizard: React.FC<GuidedModeWizardProps> = ({
           onClick={onCancel}
           className="px-4 py-2 text-sm font-medium text-gray-400 hover:text-gray-200 transition-colors"
         >
-          Cancel
+          {t('clear')}
         </button>
 
         <div className="flex gap-3">
@@ -490,7 +466,7 @@ export const GuidedModeWizard: React.FC<GuidedModeWizardProps> = ({
               className="flex items-center gap-2 px-4 py-2 border border-gray-600 text-sm font-medium rounded-lg text-gray-300 bg-gray-800 hover:bg-gray-750 transition-colors"
             >
               <ChevronLeftIcon className="w-4 h-4" />
-              Previous
+              {t('previous')}
             </button>
           )}
 
@@ -504,10 +480,10 @@ export const GuidedModeWizard: React.FC<GuidedModeWizardProps> = ({
             }`}
           >
             {currentStepIndex === STEPS.length - 1 ? (
-              <>Complete</>
+              <>{t('finish')}</>
             ) : (
               <>
-                Next
+                {t('next')}
                 <ChevronRightIcon className="w-4 h-4" />
               </>
             )}
@@ -532,7 +508,7 @@ export const GuidedModeWizard: React.FC<GuidedModeWizardProps> = ({
                   ? 'bg-teal-500/50'
                   : 'bg-gray-700'
             }`}
-            aria-label={`Go to step ${index + 1}`}
+            aria-label={`${t('stepOf')} ${index + 1}`}
           />
         ))}
       </div>

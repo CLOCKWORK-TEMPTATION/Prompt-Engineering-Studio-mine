@@ -42,23 +42,23 @@ const App: React.FC = () => {
   const renderSection = () => {
     switch (activeSection) {
       case 'introduction':
-        return <IntroductionSection />;
+        return <IntroductionSection language={currentLanguage} />;
       case 'playground':
-        return <PlaygroundSection />;
+        return <PlaygroundSection language={currentLanguage} />;
       case 'prompt-library':
-        return <PromptLibrarySection onUseTemplate={() => {}} />;
+        return <PromptLibrarySection onUseTemplate={() => {}} language={currentLanguage} />;
       case 'system-tester':
-        return <SystemPromptTesterSection />;
+        return <SystemPromptTesterSection language={currentLanguage} />;
       case 'optimizer':
         return <UserPromptOptimizerSection language={currentLanguage} />;
       case 'types':
-        return <PromptTypesSection />;
+        return <PromptTypesSection language={currentLanguage} />;
       case 'use-cases':
-        return <UseCasesSection />;
+        return <UseCasesSection language={currentLanguage} />;
       case 'strategies':
-        return <StrategiesSection />;
+        return <StrategiesSection language={currentLanguage} />;
       default:
-        return <IntroductionSection />;
+        return <IntroductionSection language={currentLanguage} />;
     }
   };
 

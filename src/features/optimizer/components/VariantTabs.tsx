@@ -6,6 +6,7 @@ import {
   RectangleStackIcon,
   WrenchScrewdriverIcon,
 } from '@/components/ui/Icons';
+import { useTranslation, type Language } from '@/hooks/useLanguage';
 
 export interface PromptVariant {
   id: string;
@@ -19,60 +20,63 @@ export interface VariantTabsProps {
   variants: PromptVariant[];
   onVariantChange?: (variant: PromptVariant) => void;
   className?: string;
+  language?: Language;
 }
-
-const VARIANT_CONFIG = {
-  generic: {
-    label: 'Generic',
-    icon: CommandLineIcon,
-    color: 'text-blue-300',
-    bgColor: 'bg-blue-500/10',
-    borderColor: 'border-blue-500/30',
-    hoverBg: 'hover:bg-blue-500/20',
-  },
-  chatgpt: {
-    label: 'ChatGPT',
-    icon: SparklesIcon,
-    color: 'text-emerald-300',
-    bgColor: 'bg-emerald-500/10',
-    borderColor: 'border-emerald-500/30',
-    hoverBg: 'hover:bg-emerald-500/20',
-  },
-  claude: {
-    label: 'Claude',
-    icon: BeakerIcon,
-    color: 'text-orange-300',
-    bgColor: 'bg-orange-500/10',
-    borderColor: 'border-orange-500/30',
-    hoverBg: 'hover:bg-orange-500/20',
-  },
-  gemini: {
-    label: 'Gemini',
-    icon: RectangleStackIcon,
-    color: 'text-cyan-300',
-    bgColor: 'bg-cyan-500/10',
-    borderColor: 'border-cyan-500/30',
-    hoverBg: 'hover:bg-cyan-500/20',
-  },
-  kimi: {
-    label: 'Kimi',
-    icon: WrenchScrewdriverIcon,
-    color: 'text-purple-300',
-    bgColor: 'bg-purple-500/10',
-    borderColor: 'border-purple-500/30',
-    hoverBg: 'hover:bg-purple-500/20',
-  },
-};
 
 export const VariantTabs: React.FC<VariantTabsProps> = ({
   variants,
   onVariantChange,
   className = '',
+  language = 'en',
 }) => {
+  const { t } = useTranslation(language);
   const [activeVariantId, setActiveVariantId] = useState(variants[0]?.id || '');
 
   const activeVariant =
     variants.find((v) => v.id === activeVariantId) || variants[0];
+
+  const VARIANT_CONFIG = {
+    generic: {
+      label: t('genericVariant'),
+      icon: CommandLineIcon,
+      color: 'text-blue-300',
+      bgColor: 'bg-blue-500/10',
+      borderColor: 'border-blue-500/30',
+      hoverBg: 'hover:bg-blue-500/20',
+    },
+    chatgpt: {
+      label: t('chatgptVariant'),
+      icon: SparklesIcon,
+      color: 'text-emerald-300',
+      bgColor: 'bg-emerald-500/10',
+      borderColor: 'border-emerald-500/30',
+      hoverBg: 'hover:bg-emerald-500/20',
+    },
+    claude: {
+      label: t('claudeVariant'),
+      icon: BeakerIcon,
+      color: 'text-orange-300',
+      bgColor: 'bg-orange-500/10',
+      borderColor: 'border-orange-500/30',
+      hoverBg: 'hover:bg-orange-500/20',
+    },
+    gemini: {
+      label: t('geminiVariant'),
+      icon: RectangleStackIcon,
+      color: 'text-cyan-300',
+      bgColor: 'bg-cyan-500/10',
+      borderColor: 'border-cyan-500/30',
+      hoverBg: 'hover:bg-cyan-500/20',
+    },
+    kimi: {
+      label: t('kimiVariant'),
+      icon: WrenchScrewdriverIcon,
+      color: 'text-purple-300',
+      bgColor: 'bg-purple-500/10',
+      borderColor: 'border-purple-500/30',
+      hoverBg: 'hover:bg-purple-500/20',
+    },
+  };
 
   const handleVariantChange = (variantId: string) => {
     setActiveVariantId(variantId);
@@ -87,7 +91,7 @@ export const VariantTabs: React.FC<VariantTabsProps> = ({
       <div
         className={`bg-gray-850 backdrop-blur-xl border border-gray-700 rounded-2xl p-8 text-center ${className}`}
       >
-        <p className="text-gray-400 text-sm">No variants available</p>
+        <p className="text-gray-400 text-sm">{t('noVariantsAvailable')}</p>
       </div>
     );
   }
@@ -142,7 +146,7 @@ export const VariantTabs: React.FC<VariantTabsProps> = ({
                     </div>
                     <div>
                       <h3 className={`text-lg font-semibold ${config.color}`}>
-                        {config.label} Variant
+                        {config.label} {t('variant')}
                       </h3>
                       {activeVariant.description && (
                         <p className="text-xs text-gray-400 mt-0.5">
@@ -172,7 +176,7 @@ export const VariantTabs: React.FC<VariantTabsProps> = ({
             <p
               className={`text-xs ${VARIANT_CONFIG[activeVariant.platform].color}`}
             >
-              <strong>Tip:</strong> This variant is optimized for{' '}
+              <strong>{t('tipThisVariantOptimized')}</strong>{' '}
               {VARIANT_CONFIG[activeVariant.platform].label}&apos;s specific
               capabilities and response patterns.
             </p>
@@ -196,7 +200,7 @@ export const VariantTabs: React.FC<VariantTabsProps> = ({
                       ? `${config.bgColor.replace('/10', '/40')}`
                       : 'bg-gray-700 hover:bg-gray-600'
                   }`}
-                  aria-label={`Switch to ${config.label} variant`}
+                  aria-label={`${t('switchToVariant')} ${config.label} ${t('variant')}`}
                 />
               );
             })}
@@ -219,12 +223,48 @@ export const CompactVariantTabs: React.FC<CompactVariantTabsProps> = ({
   variants,
   onVariantChange,
   className = '',
+  language = 'en',
 }) => {
+  const { t } = useTranslation(language);
   const [activeVariantId, setActiveVariantId] = useState(variants[0]?.id || '');
   const [showDropdown, setShowDropdown] = useState(false);
 
   const activeVariant =
     variants.find((v) => v.id === activeVariantId) || variants[0];
+
+  const VARIANT_CONFIG = {
+    generic: {
+      label: t('genericVariant'),
+      icon: CommandLineIcon,
+      color: 'text-blue-300',
+      bgColor: 'bg-blue-500/10',
+    },
+    chatgpt: {
+      label: t('chatgptVariant'),
+      icon: SparklesIcon,
+      color: 'text-emerald-300',
+      bgColor: 'bg-emerald-500/10',
+    },
+    claude: {
+      label: t('claudeVariant'),
+      icon: BeakerIcon,
+      color: 'text-orange-300',
+      bgColor: 'bg-orange-500/10',
+    },
+    gemini: {
+      label: t('geminiVariant'),
+      icon: RectangleStackIcon,
+      color: 'text-cyan-300',
+      bgColor: 'bg-cyan-500/10',
+    },
+    kimi: {
+      label: t('kimiVariant'),
+      icon: WrenchScrewdriverIcon,
+      color: 'text-purple-300',
+      bgColor: 'bg-purple-500/10',
+    },
+  };
+
   const activeConfig = activeVariant
     ? VARIANT_CONFIG[activeVariant.platform]
     : null;
@@ -246,7 +286,7 @@ export const CompactVariantTabs: React.FC<CompactVariantTabsProps> = ({
         className={`flex items-center gap-2 px-4 py-2 bg-gray-850 border border-gray-700 rounded-lg text-sm font-medium hover:bg-gray-800 transition-all ${activeConfig?.color || 'text-gray-300'}`}
       >
         <ActiveIcon className="w-4 h-4" />
-        <span>{activeConfig?.label || 'Select Variant'}</span>
+        <span>{activeConfig?.label || t('selectVariant')}</span>
         <svg
           className={`w-4 h-4 transition-transform ${showDropdown ? 'rotate-180' : ''}`}
           fill="none"

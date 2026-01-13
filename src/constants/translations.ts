@@ -131,6 +131,111 @@ export interface Translations {
   claudeOptimized: string;
   geminiOptimized: string;
   kimiOptimized: string;
+
+  // DiagnosisCard translations
+  promptAnalysis: string;
+  aiPoweredDiagnosis: string;
+  score: string;
+  missingInformation: string;
+  itemsIdentified: string;
+  priority: string;
+  highPriority: string;
+  mediumPriority: string;
+  lowPriority: string;
+  clarifyingQuestionsTitle: string;
+  questionsToImprove: string;
+  typeYourAnswer: string;
+  privacyWarnings: string;
+  warningsDetected: string;
+  considerRemovingSensitive: string;
+  assumptionsMadeTitle: string;
+  assumptionsCount: string;
+  addressItemsToCreate: string;
+  itemsToReview: string;
+  missing: string;
+  warnings: string;
+  noVariantsAvailable: string;
+  selectVariant: string;
+
+  // VariantTabs translations
+  variant: string;
+  tipThisVariantOptimized: string;
+  switchToVariant: string;
+  sideBySide: string;
+  unified: string;
+  inline: string;
+  beforeAndAfter: string;
+  added: string;
+  removed: string;
+  unchanged: string;
+  original: string;
+  lines: string;
+  empty: string;
+  copyOptimized: string;
+  before: string;
+  after: string;
+  changes: string;
+
+  // GuidedModeWizard translations
+  guidedMode: string;
+  whatWouldYouLike: string;
+  provideContext: string;
+  targetAudience: string;
+  constraintsOrRequirements: string;
+  languagePreference: string;
+  outputFormatOption: string;
+  reviewYourChoices: string;
+  reviewSelections: string;
+  socialMediaMarketing: string;
+  businessEmail: string;
+  codingTechnical: string;
+  generalAudience: string;
+  generalPublic: string;
+  technicalProfessionals: string;
+  businessExecutives: string;
+  studentsLearners: string;
+  keepItConcise: string;
+  provideDetailedExplanations: string;
+  notSpecified: string;
+  category: string;
+  numberedLabel: string;
+  bulletLabel: string;
+  codeBlock: string;
+  selectYourGoal: string;
+  selectYourAudience: string;
+  selectConstraints: string;
+  selectLanguage: string;
+  selectOutputFormat: string;
+  next: string;
+  previous: string;
+  finish: string;
+  startOver: string;
+  of: string;
+  stepOf: string;
+
+  // DiffView translations
+  viewMode: string;
+  legend: string;
+
+  // System Prompt Tester
+  systemPromptTesterTitle: string;
+  systemPromptTesterDescription: string;
+  systemPromptTesterDescriptionPart2: string;
+  systemPromptTesterDescriptionPart3: string;
+  yourSystemPrompt: string;
+  systemPromptPlaceholder: string;
+  generationMode: string;
+  qaStressTesting: string;
+  generateIdealExamples: string;
+  qaStressTestingDescription: string;
+  generateIdealExamplesDescription: string;
+  generateTestCases: string;
+  generateExamples: string;
+  error: string;
+  recommendedTestInputs: string;
+  idealUserExamples: string;
+  pleaseEnterSystemPrompt: string;
+  copyToClipboardTooltip: string;
 }
 
 export const translations: Record<Language, Translations> = {
@@ -258,6 +363,116 @@ export const translations: Record<Language, Translations> = {
     claudeOptimized: 'Optimized for Anthropic models',
     geminiOptimized: 'Optimized for Google models',
     kimiOptimized: 'Optimized for Moonshot AI',
+
+    // DiagnosisCard translations
+    promptAnalysis: 'Prompt Analysis',
+    aiPoweredDiagnosis: 'AI-powered diagnosis and recommendations',
+    score: 'Score',
+    missingInformation: 'Missing Information',
+    itemsIdentified: 'item(s) identified',
+    priority: 'Priority',
+    highPriority: 'High',
+    mediumPriority: 'Medium',
+    lowPriority: 'Low',
+    clarifyingQuestionsTitle: 'Clarifying Questions',
+    questionsToImprove: 'question(s) to improve your prompt',
+    typeYourAnswer: 'Type your answer...',
+    privacyWarnings: 'Privacy Warnings',
+    warningsDetected: 'warning(s) detected',
+    considerRemovingSensitive: 'Consider removing sensitive information before sharing your prompt.',
+    assumptionsMadeTitle: 'Assumptions Made',
+    assumptionsCount: 'assumption(s)',
+    addressItemsToCreate: 'Address these items to create a more effective prompt.',
+    itemsToReview: 'item(s) to review',
+    missing: 'missing',
+    warnings: 'warnings',
+    noVariantsAvailable: 'No variants available',
+    selectVariant: 'Select Variant',
+
+    // VariantTabs translations
+    variant: 'Variant',
+    tipThisVariantOptimized: 'Tip: This variant is optimized for',
+    switchToVariant: 'Switch to',
+    sideBySide: 'Side by Side',
+    unified: 'Unified',
+    inline: 'Inline',
+    beforeAndAfter: 'Before & After',
+    added: 'added',
+    removed: 'removed',
+    unchanged: 'unchanged',
+    original: 'Original',
+    lines: 'lines',
+    empty: '<empty>',
+    copyOptimized: 'Copy Optimized',
+    before: 'Before',
+    after: 'After',
+    changes: 'change',
+
+    // GuidedModeWizard translations
+    guidedMode: 'Guided Mode',
+    whatWouldYouLike: 'What would you like to accomplish?',
+    provideContext: 'Provide context about what you want to accomplish',
+    targetAudience: 'Target Audience',
+    constraintsOrRequirements: 'Any limitations or requirements to consider',
+    languagePreference: 'Language Preference',
+    outputFormatOption: 'Output Format',
+    reviewYourChoices: 'Review Your Choices',
+    reviewSelections: 'Review your selections before finalizing',
+    socialMediaMarketing: 'I need to create content for social media marketing',
+    businessEmail: 'I need to write a business email or professional communication',
+    codingTechnical: 'I need help with coding or technical documentation',
+    generalAudience: 'General audience',
+    generalPublic: 'General Public',
+    technicalProfessionals: 'Technical',
+    businessExecutives: 'Executives',
+    studentsLearners: 'Students',
+    keepItConcise: 'Keep it concise and to the point',
+    provideDetailedExplanations: 'Provide detailed explanations with examples',
+    notSpecified: 'Not specified',
+    category: 'General',
+    numberedLabel: 'Numbered List',
+    bulletLabel: 'Bullet Points',
+    codeBlock: 'Code Block',
+    selectYourGoal: 'Select Your Goal',
+    selectYourAudience: 'Select Your Audience',
+    selectConstraints: 'Select Constraints',
+    selectLanguage: 'Select Language',
+    selectOutputFormat: 'Select Output Format',
+    next: 'Next',
+    previous: 'Previous',
+    finish: 'Finish',
+    startOver: 'Start Over',
+    of: 'of',
+    stepOf: 'Step',
+
+    // DiffView translations
+    viewMode: 'View Mode',
+    legend: 'Legend',
+
+    // System Prompt Tester
+    systemPromptTesterTitle: 'System Prompt Tester',
+    systemPromptTesterDescription:
+      'Have a System Prompt (System Instruction) but not sure how to test it?',
+    systemPromptTesterDescriptionPart2: 'Paste it here, and our AI will generate either',
+    systemPromptTesterDescriptionPart3:
+      'to verify and showcase its capabilities.',
+    yourSystemPrompt: 'Your System Prompt / System Instruction:',
+    systemPromptPlaceholder:
+      'e.g., You are a cynical creative writing coach who only gives feedback in haiku...',
+    generationMode: 'Generation Mode:',
+    qaStressTesting: 'QA Stress Testing',
+    generateIdealExamples: 'Generate Ideal Examples',
+    qaStressTestingDescription:
+      'Generates edge cases, complex tasks, and standard inputs to find weaknesses.',
+    generateIdealExamplesDescription:
+      'Generates high-quality, impressive examples to demonstrate the best usage of the system.',
+    generateTestCases: 'Generate Test Cases',
+    generateExamples: 'Generate Examples',
+    error: 'Error',
+    recommendedTestInputs: 'Recommended Test Inputs',
+    idealUserExamples: 'Ideal User Examples',
+    pleaseEnterSystemPrompt: 'Please enter a System Prompt to analyze.',
+    copyToClipboardTooltip: 'Copy to clipboard',
   },
 
   ar: {
@@ -383,6 +598,113 @@ export const translations: Record<Language, Translations> = {
     claudeOptimized: 'محسّن لنماذج Anthropic',
     geminiOptimized: 'محسّن لنماذج Google',
     kimiOptimized: 'محسّن لـ Moonshot AI',
+
+    // DiagnosisCard translations
+    promptAnalysis: 'تحليل الأمر',
+    aiPoweredDiagnosis: 'تشخيص وتوصيات مدعومة بالذكاء الاصطناعي',
+    score: 'الدرجة',
+    missingInformation: 'المعلومات المفقودة',
+    itemsIdentified: 'عناصر تم تحديدها',
+    priority: 'الأولوية',
+    highPriority: 'عالية',
+    mediumPriority: 'متوسطة',
+    lowPriority: 'منخفضة',
+    clarifyingQuestionsTitle: 'أسئلة توضيحية',
+    questionsToImprove: 'أسئلة لتحسين أمرك',
+    typeYourAnswer: 'اكتب إجابتك...',
+    privacyWarnings: 'تحذيرات الخصوصية',
+    warningsDetected: 'تحذيرات تم اكتشافها',
+    considerRemovingSensitive: 'فكر في إزالة المعلومات الحساسة قبل مشاركة أمرك.',
+    assumptionsMadeTitle: 'الافتراضات المتبناة',
+    assumptionsCount: 'افتراضات',
+    addressItemsToCreate: 'عالج هذه العناصر لإنشاء أمر أكثر فعالية.',
+    itemsToReview: 'عناصر للمراجعة',
+    missing: 'مفقود',
+    warnings: 'تحذيرات',
+    noVariantsAvailable: 'لا توجد نسخ متاحة',
+    selectVariant: 'اختر نسخة',
+
+    // VariantTabs translations
+    variant: 'نسخة',
+    tipThisVariantOptimized: 'نصيحة: هذه النسخة محسّنة لـ',
+    switchToVariant: 'التبديل إلى',
+    sideBySide: 'جنبًا إلى جنب',
+    unified: 'موحد',
+    inline: 'مضمن',
+    beforeAndAfter: 'قبل وبعد',
+    added: 'مُضافة',
+    removed: 'مُزالة',
+    unchanged: 'لم تتغير',
+    original: 'الأصلي',
+    lines: 'أسطر',
+    empty: '<فارغ>',
+    copyOptimized: 'نسخ المحسّن',
+    before: 'قبل',
+    after: 'بعد',
+    changes: 'تغيير',
+
+    // GuidedModeWizard translations
+    guidedMode: 'الوضع الموجه',
+    whatWouldYouLike: 'ما الذي تريد إنجازه؟',
+    provideContext: 'قدم سياقًا عما تريد إنجازه',
+    targetAudience: 'الجمهور المستهدف',
+    constraintsOrRequirements: 'أي قيود أو متطلبات يجب مراعاتها',
+    languagePreference: 'تفضيل اللغة',
+    outputFormatOption: 'تنسيق الإخراج',
+    reviewYourChoices: 'راجع اختياراتك',
+    reviewSelections: 'راجع اختياراتك قبل الإنهاء',
+    socialMediaMarketing: 'أحتاج إلى إنشاء محتوى للتسويق عبر وسائل التواصل الاجتماعي',
+    businessEmail: 'أحتاج إلى كتابة بريد إلكتروني عملي أو تواصل احترافي',
+    codingTechnical: 'أحتاج مساعدة في البرمجة أو التوثيق التقني',
+    generalAudience: 'جمهور عام',
+    generalPublic: 'عامة الناس',
+    technicalProfessionals: 'تقني',
+    businessExecutives: 'التنفيذيون',
+    studentsLearners: 'الطلاب',
+    keepItConcise: 'اجعله موجزًا ومباشرًا',
+    provideDetailedExplanations: 'قدم شروحات مفصلة مع أمثلة',
+    notSpecified: 'غير محدد',
+    category: 'عام',
+    numberedLabel: 'قائمة مرقمة',
+    bulletLabel: 'نقاط',
+    codeBlock: 'كتلة كود',
+    selectYourGoal: 'اختر هدفك',
+    selectYourAudience: 'اختر جمهورك',
+    selectConstraints: 'اختر القيود',
+    selectLanguage: 'اختر اللغة',
+    selectOutputFormat: 'اختر تنسيق الإخراج',
+    next: 'التالي',
+    previous: 'السابق',
+    finish: 'إنهاء',
+    startOver: 'البدء من جديد',
+    of: 'من',
+    stepOf: 'خطوة',
+
+    // DiffView translations
+    viewMode: 'وضع العرض',
+    legend: 'مفتاح',
+
+    // System Prompt Tester
+    systemPromptTesterTitle: 'اختبار الأوامر النظامية',
+    systemPromptTesterDescription: 'لديك أمر نظامي (تعليمات نظامية) لكن لست متأكدًا من كيفية اختباره؟',
+    systemPromptTesterDescriptionPart2: 'الصقه هنا، وسيقوم ذكائنا الاصطناعي بإنشاء',
+    systemPromptTesterDescriptionPart3: 'للتحقق من إظهار قدراته.',
+    yourSystemPrompt: 'أمرك النظامي / تعليماتك النظامية:',
+    systemPromptPlaceholder: 'مثال: أنت مدرب كتابة إبداعية ساخر يعطي ملاحظاته فقط بشكل هايكو...',
+    generationMode: 'وضع الإنشاء:',
+    qaStressTesting: 'اختبار الإجهاد الشامل',
+    generateIdealExamples: 'إنشاء أمثلة مثالية',
+    qaStressTestingDescription:
+      'ينتج حالات الحافة، والمهام المعقدة، والمدخلات القياسية للعثور على نقاط الضعف.',
+    generateIdealExamplesDescription:
+      'ينتج أمثلة عالية الجودة ومبهرة لتوضيح أفضل استخدام للنظام.',
+    generateTestCases: 'إنشاء حالات الاختبار',
+    generateExamples: 'إنشاء أمثلة',
+    error: 'خطأ',
+    recommendedTestInputs: 'مدخلات الاختبار الموصى بها',
+    idealUserExamples: 'أمثلة المستخدم المثالية',
+    pleaseEnterSystemPrompt: 'الرجاء إدخال أمر نظامي للتحليل.',
+    copyToClipboardTooltip: 'نسخ إلى الحافظة',
   },
 };
 

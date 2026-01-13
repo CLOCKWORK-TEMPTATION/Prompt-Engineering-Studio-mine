@@ -5,6 +5,7 @@ import {
   LightBulbIcon,
   BeakerIcon,
 } from '@/components/ui/Icons';
+import { useTranslation, type Language } from '@/hooks/useLanguage';
 
 export interface MissingInfo {
   type: string;
@@ -30,40 +31,43 @@ export interface DiagnosisCardProps {
   diagnosis: DiagnosisData;
   onQuestionAnswer?: (questionIndex: number, answer: string) => void;
   className?: string;
+  language?: Language;
 }
-
-const PRIORITY_CONFIG = {
-  high: {
-    label: 'High',
-    color: 'text-red-300',
-    bgColor: 'bg-red-500/10',
-    borderColor: 'border-red-500/30',
-    dotColor: 'bg-red-400',
-  },
-  medium: {
-    label: 'Medium',
-    color: 'text-yellow-300',
-    bgColor: 'bg-yellow-500/10',
-    borderColor: 'border-yellow-500/30',
-    dotColor: 'bg-yellow-400',
-  },
-  low: {
-    label: 'Low',
-    color: 'text-gray-300',
-    bgColor: 'bg-gray-500/10',
-    borderColor: 'border-gray-500/30',
-    dotColor: 'bg-gray-400',
-  },
-};
 
 export const DiagnosisCard: React.FC<DiagnosisCardProps> = ({
   diagnosis,
   onQuestionAnswer,
   className = '',
+  language = 'en',
 }) => {
+  const { t } = useTranslation(language);
   const [expandedSections, setExpandedSections] = useState<Set<string>>(
     new Set(['missingInfo', 'questions']),
   );
+
+  const PRIORITY_CONFIG = {
+    high: {
+      label: t('highPriority'),
+      color: 'text-red-300',
+      bgColor: 'bg-red-500/10',
+      borderColor: 'border-red-500/30',
+      dotColor: 'bg-red-400',
+    },
+    medium: {
+      label: t('mediumPriority'),
+      color: 'text-yellow-300',
+      bgColor: 'bg-yellow-500/10',
+      borderColor: 'border-yellow-500/30',
+      dotColor: 'bg-yellow-400',
+    },
+    low: {
+      label: t('lowPriority'),
+      color: 'text-gray-300',
+      bgColor: 'bg-gray-500/10',
+      borderColor: 'border-gray-500/30',
+      dotColor: 'bg-gray-400',
+    },
+  };
 
   const toggleSection = (section: string) => {
     setExpandedSections((prev) => {
@@ -114,10 +118,10 @@ export const DiagnosisCard: React.FC<DiagnosisCardProps> = ({
             </div>
             <div>
               <h3 className="text-lg font-semibold text-teal-300">
-                Prompt Analysis
+                {t('promptAnalysis')}
               </h3>
               <p className="text-xs text-gray-400 mt-0.5">
-                AI-powered diagnosis and recommendations
+                {t('aiPoweredDiagnosis')}
               </p>
             </div>
           </div>
@@ -131,7 +135,7 @@ export const DiagnosisCard: React.FC<DiagnosisCardProps> = ({
                   {diagnosis.qualityScore}
                 </div>
                 <div className="text-xs text-gray-400 uppercase tracking-wide">
-                  Score
+                  {t('score')}
                 </div>
               </div>
             </div>
@@ -153,10 +157,10 @@ export const DiagnosisCard: React.FC<DiagnosisCardProps> = ({
                 </div>
                 <div className="text-left">
                   <h4 className="text-sm font-semibold text-gray-200">
-                    Missing Information
+                    {t('missingInformation')}
                   </h4>
                   <p className="text-xs text-gray-400">
-                    {diagnosis.missingInfo.length} item(s) identified
+                    {diagnosis.missingInfo.length} {t('itemsIdentified')}
                   </p>
                 </div>
               </div>
@@ -188,7 +192,7 @@ export const DiagnosisCard: React.FC<DiagnosisCardProps> = ({
                             <span
                               className={`text-xs font-medium ${config.color}`}
                             >
-                              {config.label} Priority
+                              {config.label} {t('priority')}
                             </span>
                           </div>
                           <p className="text-sm text-gray-300">
@@ -218,11 +222,10 @@ export const DiagnosisCard: React.FC<DiagnosisCardProps> = ({
                   </div>
                   <div className="text-left">
                     <h4 className="text-sm font-semibold text-gray-200">
-                      Clarifying Questions
+                      {t('clarifyingQuestionsTitle')}
                     </h4>
                     <p className="text-xs text-gray-400">
-                      {diagnosis.clarifyingQuestions.length} question(s) to
-                      improve your prompt
+                      {diagnosis.clarifyingQuestions.length} {t('questionsToImprove')}
                     </p>
                   </div>
                 </div>
@@ -259,7 +262,7 @@ export const DiagnosisCard: React.FC<DiagnosisCardProps> = ({
                             <div className="flex gap-2">
                               <input
                                 type="text"
-                                placeholder="Type your answer..."
+                                placeholder={t('typeYourAnswer')}
                                 className="flex-1 px-3 py-2 bg-gray-950 border border-gray-700 rounded-lg text-sm text-gray-100 placeholder-gray-500 focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                                 value={item.answer || ''}
                                 onChange={(e) =>
@@ -290,10 +293,10 @@ export const DiagnosisCard: React.FC<DiagnosisCardProps> = ({
                 </div>
                 <div className="text-left">
                   <h4 className="text-sm font-semibold text-red-300">
-                    Privacy Warnings
+                    {t('privacyWarnings')}
                   </h4>
                   <p className="text-xs text-gray-400">
-                    {diagnosis.privacyWarnings.length} warning(s) detected
+                    {diagnosis.privacyWarnings.length} {t('warningsDetected')}
                   </p>
                 </div>
               </div>
@@ -317,10 +320,7 @@ export const DiagnosisCard: React.FC<DiagnosisCardProps> = ({
                 <div className="mt-3 p-3 bg-gray-900/50 rounded-lg border border-gray-700/50">
                   <p className="text-xs text-gray-400 flex items-center gap-2">
                     <LightBulbIcon className="w-4 h-4 text-yellow-400 flex-shrink-0" />
-                    <span>
-                      Consider removing sensitive information before sharing
-                      your prompt.
-                    </span>
+                    <span>{t('considerRemovingSensitive')}</span>
                   </p>
                 </div>
               </div>
@@ -341,10 +341,10 @@ export const DiagnosisCard: React.FC<DiagnosisCardProps> = ({
                 </div>
                 <div className="text-left">
                   <h4 className="text-sm font-semibold text-gray-200">
-                    Assumptions Made
+                    {t('assumptionsMadeTitle')}
                   </h4>
                   <p className="text-xs text-gray-400">
-                    {diagnosis.assumptions.length} assumption(s)
+                    {diagnosis.assumptions.length} {t('assumptionsCount')}
                   </p>
                 </div>
               </div>
@@ -380,7 +380,7 @@ export const DiagnosisCard: React.FC<DiagnosisCardProps> = ({
       <div className="p-4 bg-teal-500/5 border-t border-teal-500/10">
         <p className="text-xs text-teal-300 flex items-center gap-2">
           <LightBulbIcon className="w-4 h-4 flex-shrink-0" />
-          <span>Address these items to create a more effective prompt.</span>
+          <span>{t('addressItemsToCreate')}</span>
         </p>
       </div>
     </div>
@@ -398,7 +398,9 @@ export interface CompactDiagnosisCardProps extends Omit<
 export const CompactDiagnosisCard: React.FC<CompactDiagnosisCardProps> = ({
   diagnosis,
   className = '',
+  language = 'en',
 }) => {
+  const { t } = useTranslation(language);
   const scoreConfig = diagnosis.qualityScore
     ? getScoreColor(diagnosis.qualityScore)
     : null;
@@ -429,20 +431,20 @@ export const CompactDiagnosisCard: React.FC<CompactDiagnosisCardProps> = ({
               </div>
             )}
             <div className="text-xs text-gray-400">
-              {totalIssues} item(s) to review
+              {totalIssues} {t('itemsToReview')}
             </div>
           </div>
         </div>
         <div className="flex gap-2">
           {diagnosis.missingInfo && diagnosis.missingInfo.length > 0 && (
             <div className="px-2 py-1 bg-orange-500/10 rounded text-xs text-orange-300">
-              {diagnosis.missingInfo.length} missing
+              {diagnosis.missingInfo.length} {t('missing')}
             </div>
           )}
           {diagnosis.privacyWarnings &&
             diagnosis.privacyWarnings.length > 0 && (
               <div className="px-2 py-1 bg-red-500/10 rounded text-xs text-red-300">
-                {diagnosis.privacyWarnings.length} warnings
+                {diagnosis.privacyWarnings.length} {t('warnings')}
               </div>
             )}
         </div>

@@ -4,6 +4,7 @@ import {
   CheckIcon,
   CodeBracketIcon,
 } from '@/components/ui/Icons';
+import { useTranslation, type Language } from '@/hooks/useLanguage';
 
 export interface DiffLine {
   content: string;
@@ -18,6 +19,7 @@ export interface DiffViewProps {
   className?: string;
   onCopyOptimized?: () => void;
   showLineNumbers?: boolean;
+  uiLanguage?: Language;
 }
 
 type ViewMode = 'side-by-side' | 'unified' | 'inline';
@@ -28,7 +30,9 @@ export const DiffView: React.FC<DiffViewProps> = ({
   className = '',
   onCopyOptimized,
   showLineNumbers = true,
+  uiLanguage = 'en',
 }) => {
+  const { t } = useTranslation(uiLanguage);
   const [viewMode, setViewMode] = useState<ViewMode>('side-by-side');
   const [copied, setCopied] = useState(false);
 
@@ -138,7 +142,7 @@ export const DiffView: React.FC<DiffViewProps> = ({
           <div className="flex items-center gap-2">
             <CodeBracketIcon className="w-5 h-5 text-teal-300" />
             <h3 className="text-lg font-semibold text-gray-200">
-              Before & After
+              {t('beforeAndAfter')}
             </h3>
           </div>
 
@@ -153,7 +157,7 @@ export const DiffView: React.FC<DiffViewProps> = ({
                     : 'text-gray-400 hover:text-gray-200'
                 }`}
               >
-                Side by Side
+                {t('sideBySide')}
               </button>
               <button
                 onClick={() => setViewMode('unified')}
@@ -163,7 +167,7 @@ export const DiffView: React.FC<DiffViewProps> = ({
                     : 'text-gray-400 hover:text-gray-200'
                 }`}
               >
-                Unified
+                {t('unified')}
               </button>
               <button
                 onClick={() => setViewMode('inline')}
@@ -173,7 +177,7 @@ export const DiffView: React.FC<DiffViewProps> = ({
                     : 'text-gray-400 hover:text-gray-200'
                 }`}
               >
-                Inline
+                {t('inline')}
               </button>
             </div>
           </div>
@@ -185,16 +189,16 @@ export const DiffView: React.FC<DiffViewProps> = ({
             <div className="flex gap-4 text-xs">
               <div className="flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                <span className="text-gray-400">{stats.added} added</span>
+                <span className="text-gray-400">{stats.added} {t('added')}</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-red-400" />
-                <span className="text-gray-400">{stats.removed} removed</span>
+                <span className="text-gray-400">{stats.removed} {t('removed')}</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-gray-400" />
                 <span className="text-gray-400">
-                  {stats.unchanged} unchanged
+                  {stats.unchanged} {t('unchanged')}
                 </span>
               </div>
             </div>
@@ -206,12 +210,12 @@ export const DiffView: React.FC<DiffViewProps> = ({
               {copied ? (
                 <>
                   <CheckIcon className="w-3.5 h-3.5 text-emerald-400" />
-                  Copied!
+                  {t('copied')}
                 </>
               ) : (
                 <>
                   <ClipboardIcon className="w-3.5 h-3.5" />
-                  Copy Optimized
+                  {t('copyOptimized')}
                 </>
               )}
             </button>
@@ -227,15 +231,15 @@ export const DiffView: React.FC<DiffViewProps> = ({
             <div className="p-4">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xs font-semibold text-red-300 uppercase tracking-wide">
-                  Original
+                  {t('original')}
                 </span>
                 <span className="text-xs text-gray-500">
-                  {original.split('\n').length} lines
+                  {original.split('\n').length} {t('lines')}
                 </span>
               </div>
               <div className="bg-gray-900 rounded-xl p-4 shadow-inner">
                 <pre className="text-sm text-gray-400 font-mono leading-relaxed whitespace-pre-wrap">
-                  {original || '<empty>'}
+                  {original || t('empty')}
                 </pre>
               </div>
             </div>
@@ -244,15 +248,15 @@ export const DiffView: React.FC<DiffViewProps> = ({
             <div className="p-4">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xs font-semibold text-emerald-300 uppercase tracking-wide">
-                  Optimized
+                  {t('optimized')}
                 </span>
                 <span className="text-xs text-gray-500">
-                  {optimized.split('\n').length} lines
+                  {optimized.split('\n').length} {t('lines')}
                 </span>
               </div>
               <div className="bg-gray-900 rounded-xl p-4 shadow-inner border border-emerald-500/20">
                 <pre className="text-sm text-gray-200 font-mono leading-relaxed whitespace-pre-wrap">
-                  {optimized || '<empty>'}
+                  {optimized || t('empty')}
                 </pre>
               </div>
             </div>
@@ -296,15 +300,15 @@ export const DiffView: React.FC<DiffViewProps> = ({
         <div className="flex items-center justify-center gap-6 text-xs">
           <div className="flex items-center gap-1.5">
             <div className="w-3 h-3 bg-emerald-500/20 border-l-2 border-emerald-500 rounded" />
-            <span className="text-gray-400">Added</span>
+            <span className="text-gray-400">{t('added')}</span>
           </div>
           <div className="flex items-center gap-1.5">
             <div className="w-3 h-3 bg-red-500/20 border-l-2 border-red-500 rounded" />
-            <span className="text-gray-400">Removed</span>
+            <span className="text-gray-400">{t('removed')}</span>
           </div>
           <div className="flex items-center gap-1.5">
             <div className="w-3 h-3 bg-gray-800 border-l-2 border-transparent rounded" />
-            <span className="text-gray-400">Unchanged</span>
+            <span className="text-gray-400">{t('unchanged')}</span>
           </div>
         </div>
       </div>
@@ -319,15 +323,18 @@ export interface InlineComparisonProps {
   beforeLabel?: string;
   afterLabel?: string;
   className?: string;
+  uiLanguage?: Language;
 }
 
 export const InlineComparison: React.FC<InlineComparisonProps> = ({
   before,
   after,
-  beforeLabel = 'Before',
-  afterLabel = 'After',
+  beforeLabel,
+  afterLabel,
   className = '',
+  uiLanguage = 'en',
 }) => {
+  const { t } = useTranslation(uiLanguage);
   const [showAfter, setShowAfter] = useState(true);
 
   return (
@@ -343,7 +350,7 @@ export const InlineComparison: React.FC<InlineComparisonProps> = ({
               : 'text-gray-400 hover:text-gray-200'
           }`}
         >
-          {beforeLabel}
+          {beforeLabel || t('before')}
         </button>
         <button
           onClick={() => setShowAfter(true)}
@@ -353,7 +360,7 @@ export const InlineComparison: React.FC<InlineComparisonProps> = ({
               : 'text-gray-400 hover:text-gray-200'
           }`}
         >
-          {afterLabel}
+          {afterLabel || t('after')}
         </button>
       </div>
 
@@ -364,7 +371,7 @@ export const InlineComparison: React.FC<InlineComparisonProps> = ({
           <pre
             className={`text-sm font-mono leading-relaxed whitespace-pre-wrap ${showAfter ? 'text-gray-200' : 'text-gray-400'}`}
           >
-            {showAfter ? after || '<empty>' : before || '<empty>'}
+            {showAfter ? after || t('empty') : before || t('empty')}
           </pre>
         </div>
       </div>
@@ -376,17 +383,22 @@ export const InlineComparison: React.FC<InlineComparisonProps> = ({
 export interface DiffIndicatorProps {
   diffCount: number;
   className?: string;
+  uiLanguage?: Language;
 }
 
 export const DiffIndicator: React.FC<DiffIndicatorProps> = ({
   diffCount,
   className = '',
+  uiLanguage = 'en',
 }) => {
+  const { t } = useTranslation(uiLanguage);
+
   return (
     <div className={`flex items-center gap-2 ${className}`}>
       <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
       <span className="text-xs text-gray-400">
-        {diffCount} change{diffCount !== 1 ? 's' : ''}
+        {diffCount} {t('changes')}
+        {diffCount !== 1 ? 's' : ''}
       </span>
     </div>
   );
