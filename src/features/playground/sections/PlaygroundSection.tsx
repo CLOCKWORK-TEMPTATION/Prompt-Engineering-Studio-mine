@@ -17,7 +17,7 @@ import { playgroundExamples } from '@/constants/playgroundExamples';
 import type { PlaygroundExample, HistoryItem } from '@/types';
 import { Suggestions } from '@/components/ui/Suggestions';
 import { playgroundSuggestions } from '@/constants/playgroundSuggestions';
-import type { Language } from '@/components/layout/LanguageSelector';
+import { useTranslation, type Language } from '@/hooks/useLanguage';
 
 const LOCAL_STORAGE_KEY = 'promptHistory';
 
@@ -32,6 +32,8 @@ export const PlaygroundSection: React.FC<PlaygroundSectionProps> = ({
   onPromptUsed,
   language = 'ar',
 }) => {
+  const { t } = useTranslation(language);
+
   const [userInput, setUserInput] = useState<string>(initialPrompt || '');
   const [customInstructions, setCustomInstructions] = useState<string>('');
   const [generatedPrompt, setGeneratedPrompt] = useState<string>('');
@@ -87,7 +89,7 @@ export const PlaygroundSection: React.FC<PlaygroundSectionProps> = ({
 
   const handleGeneratePrompt = useCallback(async () => {
     if (!userInput.trim()) {
-      setError('Please enter a base idea or prompt.');
+      setError(t('pleaseEnterBaseIdea'));
       return;
     }
     setIsLoading(true);
@@ -114,12 +116,12 @@ export const PlaygroundSection: React.FC<PlaygroundSectionProps> = ({
       if (catchError instanceof Error) {
         setError(catchError.message);
       } else {
-        setError('An unknown error occurred.');
+        setError(t('unknownError'));
       }
     } finally {
       setIsLoading(false);
     }
-  }, [userInput, customInstructions]);
+  }, [userInput, customInstructions, t]);
 
   const handleCopyToClipboard = useCallback(() => {
     if (generatedPrompt) {
@@ -131,10 +133,10 @@ export const PlaygroundSection: React.FC<PlaygroundSectionProps> = ({
         })
         .catch(() => {
           console.error('Failed to copy text: ');
-          setError('Failed to copy text to clipboard.');
+          setError(t('failedToCopyText'));
         });
     }
-  }, [generatedPrompt]);
+  }, [generatedPrompt, t]);
 
   const handleSharePrompt = useCallback(async () => {
     if (!generatedPrompt) return;
@@ -154,14 +156,14 @@ export const PlaygroundSection: React.FC<PlaygroundSectionProps> = ({
       const shareUrl = `${window.location.origin}${window.location.pathname}?prompt=${encodeURIComponent(userInput)}&instructions=${encodeURIComponent(customInstructions)}`;
       try {
         await navigator.clipboard.writeText(shareUrl);
-        setShareStatus('Share link copied to clipboard!');
+        setShareStatus(t('shareLinkCopiedClipboard'));
         setTimeout(() => setShareStatus(''), 2500);
       } catch {
-        setShareStatus('Failed to copy share link.');
+        setShareStatus(t('failedToCopyShareLink'));
         setTimeout(() => setShareStatus(''), 2500);
       }
     }
-  }, [generatedPrompt, userInput, customInstructions]);
+  }, [generatedPrompt, userInput, customInstructions, t]);
 
   const handleChainPrompt = useCallback(() => {
     if (!generatedPrompt) return;
@@ -211,12 +213,11 @@ export const PlaygroundSection: React.FC<PlaygroundSectionProps> = ({
     <div className="space-y-10 animate-fade-in max-w-5xl mx-auto" ref={topRef}>
       <header className="pb-8 border-b border-gray-700/50">
         <h1 className="text-5xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-500 pb-2">
-          Prompt Playground
+          {t('playgroundTitle')}
         </h1>
         <p className="mt-4 text-lg text-gray-400 max-w-3xl leading-relaxed">
-          Transform your basic ideas into powerful, high-performance AI prompts.
-          Enter your concept, or start with an example, and let our AI Prompt
-          Genius craft an enhanced version for you.
+          {t('playgroundDescription')} {t('playgroundDescriptionPart2')}{' '}
+          {t('playgroundDescriptionPart3')}
         </p>
       </header>
 
@@ -228,7 +229,7 @@ export const PlaygroundSection: React.FC<PlaygroundSectionProps> = ({
         />
       )}
 
-      <Card title="Start with an Example" className="bg-gray-850">
+      <Card title={t('startWithExample')} className="bg-gray-850">
         <div className="flex flex-wrap gap-2">
           {playgroundExamples.map((ex) => (
             <button
@@ -251,7 +252,7 @@ export const PlaygroundSection: React.FC<PlaygroundSectionProps> = ({
               htmlFor="userInput"
               className="block text-sm font-medium text-blue-300 mb-2"
             >
-              Your Base Idea or Existing Prompt:
+              {t('baseIdeaOrExistingPrompt')}
             </label>
             <textarea
               ref={inputAreaRef}
@@ -260,8 +261,8 @@ export const PlaygroundSection: React.FC<PlaygroundSectionProps> = ({
               onChange={(e) => setUserInput(e.target.value)}
               rows={6}
               className="w-full p-4 bg-gray-900 border border-gray-700 rounded-xl shadow-inner focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-100 placeholder-gray-500 transition-all duration-300 text-sm leading-relaxed"
-              placeholder="e.g., A story about a time-traveling cat."
-              aria-label="Your Base Idea or Existing Prompt"
+              placeholder={t('baseIdeaPlaceholder')}
+              aria-label={t('baseIdeaOrExistingPrompt')}
             />
             {isChaining && (
               <div className="absolute top-10 left-0 w-full h-full pointer-events-none bg-blue-500/10 animate-pulse rounded-xl" />
@@ -273,7 +274,7 @@ export const PlaygroundSection: React.FC<PlaygroundSectionProps> = ({
               htmlFor="customInstructions"
               className="block text-sm font-medium text-blue-300 mb-2"
             >
-              Optional: Specific Instructions for Enhancement:
+              {t('specificInstructionsEnhancement')}
             </label>
             <textarea
               id="customInstructions"
@@ -281,12 +282,11 @@ export const PlaygroundSection: React.FC<PlaygroundSectionProps> = ({
               onChange={(e) => setCustomInstructions(e.target.value)}
               rows={3}
               className="w-full p-4 bg-gray-900 border border-gray-700 rounded-xl shadow-inner focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-100 placeholder-gray-500 transition-all duration-300 text-sm leading-relaxed"
-              placeholder="e.g., Target audience: young adults. Tone: humorous and witty..."
-              aria-label="Optional: Specific Instructions for Enhancement"
+              placeholder={t('specificInstructionsPlaceholder')}
+              aria-label={t('specificInstructionsEnhancement')}
             />
             <p className="mt-2 text-xs text-gray-400">
-              Examples: desired tone, style, length, target audience, key
-              elements to include/exclude.
+              {t('specificInstructionsHelp')} {t('specificInstructionsHelpPart2')}
             </p>
           </div>
 
@@ -302,7 +302,7 @@ export const PlaygroundSection: React.FC<PlaygroundSectionProps> = ({
               ) : (
                 <>
                   <SparklesIcon className="w-5 h-5 mr-2" aria-hidden="true" />
-                  Generate Enhanced Prompt
+                  {t('generateEnhancedPrompt')}
                 </>
               )}
             </button>
@@ -310,9 +310,9 @@ export const PlaygroundSection: React.FC<PlaygroundSectionProps> = ({
               onClick={handleClearAll}
               disabled={isLoading}
               className="w-full sm:w-auto flex items-center justify-center px-6 py-4 border border-gray-600 text-base font-medium rounded-xl shadow-sm text-gray-300 bg-gray-800 hover:bg-gray-750 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-blue-500 disabled:opacity-50 transition-colors"
-              aria-label="Clear all inputs and results"
+              aria-label={t('clearAllInputsLabel')}
             >
-              Clear All
+              {t('clearAllInputs')}
             </button>
           </div>
 
@@ -321,7 +321,7 @@ export const PlaygroundSection: React.FC<PlaygroundSectionProps> = ({
               role="alert"
               className="p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-red-300 text-sm"
             >
-              <p className="font-semibold mb-1">An Error Occurred</p>
+              <p className="font-semibold mb-1">{t('anErrorOccurred')}</p>
               <p>{error}</p>
             </div>
           )}
@@ -329,10 +329,7 @@ export const PlaygroundSection: React.FC<PlaygroundSectionProps> = ({
       </Card>
 
       {generatedPrompt && (
-        <Card
-          title="✨ Genius-Level Prompt ✨"
-          className="bg-gray-850 animate-slide-up"
-        >
+        <Card title={t('geniusLevelPrompt')} className="bg-gray-850 animate-slide-up">
           <div className="relative group">
             <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-teal-500 rounded-xl blur opacity-20 group-hover:opacity-30 transition duration-1000 group-hover:duration-200"></div>
             <pre
@@ -345,24 +342,24 @@ export const PlaygroundSection: React.FC<PlaygroundSectionProps> = ({
               <button
                 onClick={handleChainPrompt}
                 className="p-2 bg-gray-800 hover:bg-blue-600 rounded-lg text-blue-300 hover:text-white transition-all shadow-lg border border-gray-700 flex items-center gap-1.5"
-                title="Chain to Input"
+                title={t('chainToInput')}
               >
                 <LinkIcon className="w-4 h-4" aria-hidden="true" />
                 <span className="hidden sm:inline text-[10px] font-bold tracking-wider uppercase">
-                  Chain
+                  {t('chain')}
                 </span>
               </button>
               <button
                 onClick={handleSharePrompt}
                 className="p-2 bg-gray-800 hover:bg-gray-700 rounded-lg text-gray-400 hover:text-white transition-all shadow-lg border border-gray-700"
-                title="Share prompt"
+                title={t('sharePromptButton')}
               >
                 <ShareIcon className="w-4 h-4" aria-hidden="true" />
               </button>
               <button
                 onClick={handleCopyToClipboard}
                 className="p-2 bg-gray-800 hover:bg-gray-700 rounded-lg text-gray-400 hover:text-white transition-all shadow-lg border border-gray-700"
-                title="Copy to clipboard"
+                title={t('copyToClipboardButton')}
               >
                 {copied ? (
                   <CheckIcon className="w-4 h-4 text-teal-400" />
@@ -381,8 +378,8 @@ export const PlaygroundSection: React.FC<PlaygroundSectionProps> = ({
             <p className="text-xs text-blue-300 flex items-center gap-3">
               <LightBulbIcon className="w-5 h-5 flex-shrink-0" />
               <span>
-                Tip: Click <strong>CHAIN</strong> to use this refined output as
-                your next starting point for iterative prompt engineering.
+                {t('chainPlaygroundTip')} <strong>{t('chain')}</strong>{' '}
+                {t('chainPlaygroundTipPart2')}
               </span>
             </p>
           </div>
@@ -390,7 +387,7 @@ export const PlaygroundSection: React.FC<PlaygroundSectionProps> = ({
       )}
 
       {history.length > 0 && (
-        <AccordionItem title="Prompt History">
+        <AccordionItem title={t('promptHistory')}>
           <div className="space-y-4 max-h-96 overflow-y-auto pr-2 custom-scrollbar">
             {history.map((item) => (
               <div
@@ -414,7 +411,7 @@ export const PlaygroundSection: React.FC<PlaygroundSectionProps> = ({
                     <button
                       onClick={() => handleDeleteHistory(item.id)}
                       className="p-1.5 text-gray-500 hover:text-red-400 transition-colors"
-                      title="Delete"
+                      title={t('delete')}
                     >
                       <TrashIcon className="w-4 h-4" />
                     </button>
@@ -422,22 +419,22 @@ export const PlaygroundSection: React.FC<PlaygroundSectionProps> = ({
                       onClick={() => handleReuseHistory(item)}
                       className="px-3 py-1 text-xs font-semibold bg-blue-600/20 text-blue-300 border border-blue-500/30 rounded-lg hover:bg-blue-600 hover:text-white transition-all"
                     >
-                      Reuse
+                      {t('reuse')}
                     </button>
                   </div>
                 </div>
                 <details className="mt-3 group">
                   <summary className="text-xs text-gray-500 cursor-pointer hover:text-gray-300 select-none flex items-center gap-2">
-                    <span className="group-open:hidden">▶ View Details</span>
+                    <span className="group-open:hidden">{t('viewDetails')}</span>
                     <span className="hidden group-open:inline">
-                      ▼ Hide Details
+                      {t('hideDetails')}
                     </span>
                   </summary>
                   <div className="mt-3 p-3 bg-gray-950 rounded-lg border border-gray-800">
                     {item.customInstructions && (
                       <div className="mb-3">
                         <p className="text-[10px] uppercase font-bold text-gray-600 mb-1">
-                          Instructions
+                          {t('instructions')}
                         </p>
                         <p className="text-xs text-gray-400">
                           {item.customInstructions}
@@ -446,7 +443,7 @@ export const PlaygroundSection: React.FC<PlaygroundSectionProps> = ({
                     )}
                     <div>
                       <p className="text-[10px] uppercase font-bold text-gray-600 mb-1">
-                        Result
+                        {t('result')}
                       </p>
                       <pre className="text-xs text-gray-300 whitespace-pre-wrap font-mono">
                         <code>{item.generatedPrompt}</code>

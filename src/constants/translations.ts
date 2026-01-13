@@ -794,6 +794,40 @@ export const translations: Record<Language, Translations> = {
     copyTemplate: 'نسخ القالب',
     copyTemplateAriaLabel: 'نسخ قالب الأمر إلى الحافظة',
     useInPlaygroundLibrary: 'الاستخدام في ساحة اللعب',
+
+    // Playground translations
+    playgroundTitle: 'ساحة اللعب للأوامر',
+    playgroundDescription:
+      'حوّل أفكارك الأساسية إلى أوامر ذكاء اصطناعي قوية وعالية الأداء.',
+    playgroundDescriptionPart2:
+      'أدخل مفهومك، أو ابدأ بمثال، ودع عبقري أوامر الذكاء الاصطناعي',
+    playgroundDescriptionPart3: 'يصيغ نسخة محسّنة لك.',
+    baseIdeaOrExistingPrompt: 'فكرتك الأساسية أو أمرك الحالي:',
+    baseIdeaPlaceholder: 'مثال: قصة عن قطة تسافر عبر الزمن.',
+    specificInstructionsEnhancement: 'اختياري: تعليمات محددة للتحسين:',
+    specificInstructionsPlaceholder:
+      'مثال: الجمهور المستهدف: الشباب. النبرة: فكاهية وذكية...',
+    specificInstructionsHelp:
+      'أمثلة: النبرة المطلوبة، الأسلوب، الطول، الجمهور المستهدف، العناصر',
+    specificInstructionsHelpPart2: 'الأساسية المطلوب إدراجها/استبعادها.',
+    generateEnhancedPrompt: 'إنشاء أمر محسّن',
+    clearAllInputs: 'مسح الكل',
+    clearAllInputsLabel: 'مسح جميع المدخلات والنتائج',
+    anErrorOccurred: 'حدث خطأ',
+    geniusLevelPrompt: '✨ أمر بمستوى عبقري ✨',
+    promptHistory: 'سجل الأوامر',
+    instructions: 'التعليمات',
+    result: 'النتيجة',
+    chainToInput: 'سلسلة للإدخال',
+    sharePromptButton: 'مشاركة الأمر',
+    copyToClipboardButton: 'نسخ إلى الحافظة',
+    chainPlaygroundTip: 'نصيحة: انقر على',
+    chainPlaygroundTipPart2:
+      'سلسلة لاستخدام هذه المخرجات المكررة كنقطة بداية التالية لهندسة الأوامر التكرارية.',
+    pleaseEnterBaseIdea: 'الرجاء إدخال فكرة أساسية أو أمر.',
+    failedToCopyText: 'فشل نسخ النص إلى الحافظة.',
+    shareLinkCopiedClipboard: 'تم نسخ رابط المشاركة!',
+    failedToCopyShareLink: 'فشل نسخ رابط المشاركة.',
   },
 };
 
