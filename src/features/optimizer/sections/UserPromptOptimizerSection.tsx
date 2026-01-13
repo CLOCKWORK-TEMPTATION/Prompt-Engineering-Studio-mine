@@ -188,7 +188,7 @@ export const UserPromptOptimizerSection: React.FC<
         question: q,
         category: 'General',
       })) ?? [],
-      privacyWarnings: diagnosis?.privacyWarning ? [diagnosis.privacyWarning] : [],
+      privacyWarnings: diagnosis?.privacyWarnings ?? [],
       assumptions: Array.isArray(analysisData.assumptions) ? analysisData.assumptions as string[] : [],
     } as DiagnosisData;
   }, [optimizerResponse]);
@@ -404,7 +404,7 @@ export const UserPromptOptimizerSection: React.FC<
           </div>
 
           {/* Privacy Warnings */}
-          {diagnosis?.privacyWarning && (
+          {diagnosis?.privacyWarnings && diagnosis.privacyWarnings.length > 0 && (
             <div className="p-3 bg-red-500/10 border border-red-500/30 rounded-lg">
               <div className="flex items-start gap-2">
                 <ExclamationTriangleIcon className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
@@ -412,8 +412,10 @@ export const UserPromptOptimizerSection: React.FC<
                   <div className="text-sm font-semibold text-red-300 mb-1">
                     {t('privacyAndSecurityAlerts')}
                   </div>
-                  <div className="text-xs text-red-200">
-                    {diagnosis.privacyWarning}
+                  <div className="text-xs text-red-200 space-y-1">
+                    {diagnosis.privacyWarnings.map((warning, idx) => (
+                      <div key={idx}>{warning}</div>
+                    ))}
                   </div>
                 </div>
               </div>
