@@ -140,16 +140,45 @@ export function parseOptimizerResponse(
   | { success: true; data: OptimizerResponse }
   | { success: false; error: string } {
   try {
-    if (typeof response === 'string') {
-      const parsed = JSON.parse(response);
-      return { success: true, data: parsed as OptimizerResponse };
+    const parsed = typeof response === 'string' ? JSON.parse(response) : response;
+    const data = parsed as OptimizerResponse;
+
+    // --- Normalize analysis quality_score -> qualityScore ---
+    if ((data as any).analysis) {
+      const analysis = (data as any).analysis;
+      if (analysis.quality_score !== undefined && analysis.qualityScore === undefined) {
+        analysis.qualityScore = analysis.quality_score;
+      }
     }
-    return { success: true, data: response as OptimizerResponse };
+
+    // --- Normalize diagnosis fields ---
+    if ((data as any).diagnosis) {
+      const diag = (data as any).diagnosis;
+
+      // warnings -> privacyWarnings (if applicable)
+      if (diag.warnings && !diag.privacyWarnings) {
+        diag.privacyWarnings = Array.isArray(diag.warnings) ? diag.warnings : [diag.warnings];
+      }
+
+      // privacyWarning (singular) -> privacyWarnings (array)
+      if (diag.privacyWarning && !diag.privacyWarnings) {
+        diag.privacyWarnings = Array.isArray(diag.privacyWarning)
+          ? diag.privacyWarning
+          : [diag.privacyWarning];
+      }
+
+      // If diagnosis lacks qualityScore, pull it from analysis (if exists)
+      if (diag.qualityScore === undefined && (data as any).analysis) {
+        const analysis = (data as any).analysis;
+        diag.qualityScore = analysis.qualityScore ?? analysis.quality_score ?? undefined;
+      }
+    }
+
+    return { success: true, data: data as OptimizerResponse };
   } catch (error) {
     return {
       success: false,
-      error:
-        error instanceof Error ? error.message : 'Failed to parse response',
+      error: error instanceof Error ? error.message : 'Failed to parse response',
     };
   }
 }
