@@ -8,8 +8,7 @@ import {
   CheckIcon,
   TrashIcon,
 } from '@/components/ui/Icons';
-import { useTranslation } from '@/hooks/useTranslation';
-import type { Language } from '@/components/layout/LanguageSelector';
+import { useTranslation, type Language } from '@/hooks/useTranslation';
 
 interface SystemPromptTesterSectionProps {
   language?: Language;
