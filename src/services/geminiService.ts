@@ -39,7 +39,7 @@ Analyze the user's input prompt and provide:
 - Medical information: diagnoses, treatments, patient data
 - Passwords, API keys, tokens, credentials
 - Confidential business data: trade secrets, internal documents
-- If detected, include a warning in "privacyWarning"
+- If detected, include warnings in "privacyWarnings" array
 
 **Missing Information Analysis:**
 - Unclear or ambiguous intent
@@ -63,7 +63,9 @@ Respond ONLY with this exact JSON structure (no markdown code blocks):
   "diagnosis": {
     "missingInfo": ["list of missing information items"],
     "clarifyingQuestions": ["2-5 questions to clarify intent"],
-    "privacyWarning": "warning message if sensitive info detected (optional)"
+    "privacyWarnings": ["array of warning messages if sensitive info detected"],
+    "qualityScore": 0-100,
+    "assumptions": ["list of assumptions made during optimization"]
   },
   "analysis": {
     "qualityScore": 0-100,

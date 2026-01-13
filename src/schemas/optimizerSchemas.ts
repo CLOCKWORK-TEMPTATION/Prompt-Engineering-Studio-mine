@@ -55,13 +55,34 @@ export const diagnosisSchema = z
       .min(2, 'At least 2 clarifying questions are recommended')
       .max(5, 'Maximum 5 clarifying questions allowed')
       .default([]),
-    privacyWarning: z.string().optional(),
-    // Snake_case aliases for compatibility
+    privacyWarnings: z.array(z.string()).default([]),
+    qualityScore: z
+      .number()
+      .min(0, 'Quality score must be between 0 and 100')
+      .max(100, 'Quality score must be between 0 and 100')
+      .optional(),
+    assumptions: z.array(z.string()).default([]),
+    // Snake_case and legacy aliases for compatibility
     missing_info: z.array(z.string().min(1)).optional(),
     clarifying_questions: z.array(z.string().min(1)).optional(),
+    privacy_warnings: z.array(z.string()).optional(),
+    privacyWarning: z.string().optional(), // legacy singular form
+    warnings: z.array(z.string()).optional(), // legacy form
   })
   .transform((data) => {
-    // Normalize to camelCase, using camelCase values first, falling back to snake_case
+    // Normalize privacyWarnings from various legacy sources
+    let privacyWarnings = data.privacyWarnings;
+    if (privacyWarnings.length === 0) {
+      // Try legacy sources in order of preference
+      if (data.privacy_warnings) {
+        privacyWarnings = data.privacy_warnings;
+      } else if (data.warnings) {
+        privacyWarnings = data.warnings;
+      } else if (data.privacyWarning) {
+        privacyWarnings = [data.privacyWarning];
+      }
+    }
+
     return {
       missingInfo:
         data.missingInfo.length > 0
@@ -71,7 +92,9 @@ export const diagnosisSchema = z
         data.clarifyingQuestions.length > 0
           ? data.clarifyingQuestions
           : (data.clarifying_questions ?? []),
-      privacyWarning: data.privacyWarning,
+      privacyWarnings,
+      qualityScore: data.qualityScore,
+      assumptions: data.assumptions,
     };
   });
 
@@ -227,7 +250,6 @@ export const optimizerResponseSchema = z
       .min(1, 'Original prompt cannot be empty')
       .optional(),
     timestamp: z.string().optional(),
-    warnings: z.array(z.string().min(1)).optional(),
   })
   .refine(
     (data) => {
