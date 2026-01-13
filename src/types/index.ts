@@ -30,7 +30,9 @@ export interface OptimizerHistoryItem extends HistoryItem {
   diagnosis?: {
     missingInfo?: string[];
     clarifyingQuestions?: string[];
-    warnings?: string[];
+    privacyWarnings?: string[];
+    qualityScore?: number;
+    assumptions?: string[];
   };
   result?: OptimizerResponse | string;
   isStructured?: boolean;
@@ -42,8 +44,9 @@ export interface OptimizerResponse {
   diagnosis?: {
     missingInfo?: string[];
     clarifyingQuestions?: string[];
-    warnings?: string[];
-    privacyWarning?: string;
+    privacyWarnings?: string[];
+    qualityScore?: number;
+    assumptions?: string[];
   };
   variants: {
     generic: string;
@@ -55,7 +58,6 @@ export interface OptimizerResponse {
   };
   analysis?: {
     qualityScore?: number;
-    quality_score?: number;
     intent?: string;
     language?: string;
     assumptions?: string[];
