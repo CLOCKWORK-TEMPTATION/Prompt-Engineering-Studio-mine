@@ -236,6 +236,43 @@ export interface Translations {
   idealUserExamples: string;
   pleaseEnterSystemPrompt: string;
   copyToClipboardTooltip: string;
+
+  // Prompt Library translations
+  promptLibraryTitle: string;
+  promptLibraryDescription: string;
+  variables: string;
+  copyTemplate: string;
+  copyTemplateAriaLabel: string;
+  useInPlaygroundLibrary: string;
+
+  // Playground translations
+  playgroundTitle: string;
+  playgroundDescription: string;
+  playgroundDescriptionPart2: string;
+  playgroundDescriptionPart3: string;
+  baseIdeaOrExistingPrompt: string;
+  baseIdeaPlaceholder: string;
+  specificInstructionsEnhancement: string;
+  specificInstructionsPlaceholder: string;
+  specificInstructionsHelp: string;
+  specificInstructionsHelpPart2: string;
+  generateEnhancedPrompt: string;
+  clearAllInputs: string;
+  clearAllInputsLabel: string;
+  anErrorOccurred: string;
+  geniusLevelPrompt: string;
+  promptHistory: string;
+  instructions: string;
+  result: string;
+  chainToInput: string;
+  sharePromptButton: string;
+  copyToClipboardButton: string;
+  chainPlaygroundTip: string;
+  chainPlaygroundTipPart2: string;
+  pleaseEnterBaseIdea: string;
+  failedToCopyText: string;
+  shareLinkCopiedClipboard: string;
+  failedToCopyShareLink: string;
 }
 
 export const translations: Record<Language, Translations> = {
@@ -473,6 +510,49 @@ export const translations: Record<Language, Translations> = {
     idealUserExamples: 'Ideal User Examples',
     pleaseEnterSystemPrompt: 'Please enter a System Prompt to analyze.',
     copyToClipboardTooltip: 'Copy to clipboard',
+
+    // Prompt Library translations
+    promptLibraryTitle: 'Prompt Template Library',
+    promptLibraryDescription:
+      'A curated collection of high-quality, structured prompt templates to kickstart your tasks. Choose a template, customize the variables, and get superior results from the AI.',
+    variables: 'Variables',
+    copyTemplate: 'Copy Template',
+    copyTemplateAriaLabel: 'Copy prompt template to clipboard',
+    useInPlaygroundLibrary: 'Use in Playground',
+
+    // Playground translations
+    playgroundTitle: 'Prompt Playground',
+    playgroundDescription:
+      'Transform your basic ideas into powerful, high-performance AI prompts.',
+    playgroundDescriptionPart2:
+      'Enter your concept, or start with an example, and let our AI Prompt',
+    playgroundDescriptionPart3: 'Genius craft an enhanced version for you.',
+    baseIdeaOrExistingPrompt: 'Your Base Idea or Existing Prompt:',
+    baseIdeaPlaceholder: 'e.g., A story about a time-traveling cat.',
+    specificInstructionsEnhancement: 'Optional: Specific Instructions for Enhancement:',
+    specificInstructionsPlaceholder:
+      'e.g., Target audience: young adults. Tone: humorous and witty...',
+    specificInstructionsHelp:
+      'Examples: desired tone, style, length, target audience, key',
+    specificInstructionsHelpPart2: 'elements to include/exclude.',
+    generateEnhancedPrompt: 'Generate Enhanced Prompt',
+    clearAllInputs: 'Clear All',
+    clearAllInputsLabel: 'Clear all inputs and results',
+    anErrorOccurred: 'An Error Occurred',
+    geniusLevelPrompt: '✨ Genius-Level Prompt ✨',
+    promptHistory: 'Prompt History',
+    instructions: 'Instructions',
+    result: 'Result',
+    chainToInput: 'Chain to Input',
+    sharePromptButton: 'Share prompt',
+    copyToClipboardButton: 'Copy to clipboard',
+    chainPlaygroundTip: 'Tip: Click',
+    chainPlaygroundTipPart2:
+      'CHAIN to use this refined output as your next starting point for iterative prompt engineering.',
+    pleaseEnterBaseIdea: 'Please enter a base idea or prompt.',
+    failedToCopyText: 'Failed to copy text to clipboard.',
+    shareLinkCopiedClipboard: 'Share link copied to clipboard!',
+    failedToCopyShareLink: 'Failed to copy share link.',
   },
 
   ar: {
@@ -705,6 +785,15 @@ export const translations: Record<Language, Translations> = {
     idealUserExamples: 'أمثلة المستخدم المثالية',
     pleaseEnterSystemPrompt: 'الرجاء إدخال أمر نظامي للتحليل.',
     copyToClipboardTooltip: 'نسخ إلى الحافظة',
+
+    // Prompt Library translations
+    promptLibraryTitle: 'مكتبة قوالب الأوامر',
+    promptLibraryDescription:
+      'مجموعة مختارة من قوالب الأوامر عالية الجودة والمنظمة لبدء مهامك بسرعة. اختر قالبًا، خصّص المتغيرات، واحصل على نتائج متفوقة من الذكاء الاصطناعي.',
+    variables: 'المتغيرات',
+    copyTemplate: 'نسخ القالب',
+    copyTemplateAriaLabel: 'نسخ قالب الأمر إلى الحافظة',
+    useInPlaygroundLibrary: 'الاستخدام في ساحة اللعب',
   },
 };
 

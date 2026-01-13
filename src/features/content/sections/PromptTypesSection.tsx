@@ -1,8 +1,13 @@
 import React from 'react';
 import { SectionPage } from './SectionPage';
 import { promptTypesContent } from '@/constants/promptData';
+import type { Language } from '@/components/layout/LanguageSelector';
 
-export const PromptTypesSection: React.FC = () => {
+interface PromptTypesSectionProps {
+  language?: Language;
+}
+
+export const PromptTypesSection: React.FC<PromptTypesSectionProps> = ({ language = 'ar' }) => {
   return (
     <SectionPage
       title="Understanding Prompt Types"

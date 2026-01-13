@@ -4,8 +4,13 @@ import {
   strategiesContent,
   furtherGuidanceContent,
 } from '@/constants/promptData';
+import type { Language } from '@/components/layout/LanguageSelector';
 
-export const StrategiesSection: React.FC = () => {
+interface StrategiesSectionProps {
+  language?: Language;
+}
+
+export const StrategiesSection: React.FC<StrategiesSectionProps> = ({ language = 'ar' }) => {
   return (
     <SectionPage
       title="Strategies for Writing Better Prompts"

@@ -17,17 +17,20 @@ import { playgroundExamples } from '@/constants/playgroundExamples';
 import type { PlaygroundExample, HistoryItem } from '@/types';
 import { Suggestions } from '@/components/ui/Suggestions';
 import { playgroundSuggestions } from '@/constants/playgroundSuggestions';
+import type { Language } from '@/components/layout/LanguageSelector';
 
 const LOCAL_STORAGE_KEY = 'promptHistory';
 
 interface PlaygroundSectionProps {
   initialPrompt?: string;
   onPromptUsed?: () => void;
+  language?: Language;
 }
 
 export const PlaygroundSection: React.FC<PlaygroundSectionProps> = ({
   initialPrompt,
   onPromptUsed,
+  language = 'ar',
 }) => {
   const [userInput, setUserInput] = useState<string>(initialPrompt || '');
   const [customInstructions, setCustomInstructions] = useState<string>('');

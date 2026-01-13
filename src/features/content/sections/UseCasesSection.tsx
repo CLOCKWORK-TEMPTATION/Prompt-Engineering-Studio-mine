@@ -1,8 +1,13 @@
 import React from 'react';
 import { SectionPage } from './SectionPage';
 import { useCasesContent } from '@/constants/promptData';
+import type { Language } from '@/components/layout/LanguageSelector';
 
-export const UseCasesSection: React.FC = () => {
+interface UseCasesSectionProps {
+  language?: Language;
+}
+
+export const UseCasesSection: React.FC<UseCasesSectionProps> = ({ language = 'ar' }) => {
   return (
     <SectionPage
       title="Prompt Engineering Use Cases & Examples"

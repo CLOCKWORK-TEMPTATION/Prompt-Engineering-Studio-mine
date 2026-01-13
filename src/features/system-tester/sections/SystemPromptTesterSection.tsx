@@ -8,8 +8,17 @@ import {
   CheckIcon,
   TrashIcon,
 } from '@/components/ui/Icons';
+import { useTranslation } from '@/hooks/useTranslation';
+import type { Language } from '@/components/layout/LanguageSelector';
 
-export const SystemPromptTesterSection: React.FC = () => {
+interface SystemPromptTesterSectionProps {
+  language?: Language;
+}
+
+export const SystemPromptTesterSection: React.FC<
+  SystemPromptTesterSectionProps
+> = ({ language = 'ar' }) => {
+  const { t } = useTranslation(language);
   const [systemPrompt, setSystemPrompt] = useState<string>('');
   const [generationMode, setGenerationMode] = useState<'test' | 'example'>(
     'test',
@@ -21,7 +30,7 @@ export const SystemPromptTesterSection: React.FC = () => {
 
   const handleGenerate = async () => {
     if (!systemPrompt.trim()) {
-      setError('Please enter a System Prompt to analyze.');
+      setError(t('pleaseEnterSystemPrompt'));
       return;
     }
     setIsLoading(true);
@@ -34,7 +43,7 @@ export const SystemPromptTesterSection: React.FC = () => {
       if (err instanceof Error) {
         setError(err.message);
       } else {
-        setError('An unknown error occurred.');
+        setError(t('unknownError'));
       }
     } finally {
       setIsLoading(false);
@@ -65,14 +74,14 @@ export const SystemPromptTesterSection: React.FC = () => {
     <div className="space-y-10 animate-fade-in max-w-5xl mx-auto">
       <header className="pb-8 border-b border-gray-700/50">
         <h1 className="text-5xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-500 pb-2">
-          System Prompt Tester
+          {t('systemPromptTesterTitle')}
         </h1>
         <p className="mt-4 text-lg text-gray-400 max-w-3xl leading-relaxed">
-          Have a System Prompt (System Instruction) but not sure how to test it?
-          Paste it here, and our AI will generate either{' '}
-          <strong>comprehensive QA Test Cases</strong> or{' '}
-          <strong>Ideal User Examples</strong> to verify and showcase its
-          capabilities.
+          {t('systemPromptTesterDescription')}{' '}
+          <strong>
+            {t('qaStressTesting')} / {t('generateIdealExamples')}
+          </strong>{' '}
+          {t('systemPromptTesterDescriptionPart3')}
         </p>
       </header>
 
@@ -83,7 +92,7 @@ export const SystemPromptTesterSection: React.FC = () => {
               htmlFor="systemPrompt"
               className="block text-sm font-medium text-blue-300 mb-2"
             >
-              Your System Prompt / System Instruction:
+              {t('yourSystemPrompt')}
             </label>
             <textarea
               id="systemPrompt"
@@ -91,13 +100,13 @@ export const SystemPromptTesterSection: React.FC = () => {
               onChange={(e) => setSystemPrompt(e.target.value)}
               rows={8}
               className="w-full p-4 bg-gray-900 border border-gray-700 rounded-xl shadow-inner focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-100 placeholder-gray-500 transition-all duration-300 font-mono text-sm leading-relaxed"
-              placeholder="e.g., You are a cynical creative writing coach who only gives feedback in haiku..."
+              placeholder={t('systemPromptPlaceholder')}
             />
           </div>
 
           <div>
             <label className="block text-sm font-medium text-blue-300 mb-3">
-              Generation Mode:
+              {t('generationMode')}
             </label>
             <div
               className="flex rounded-xl shadow-sm bg-gray-900 p-1 border border-gray-700 inline-flex"
@@ -112,7 +121,7 @@ export const SystemPromptTesterSection: React.FC = () => {
                     : 'text-gray-400 hover:text-white hover:bg-gray-800'
                 }`}
               >
-                QA Stress Testing
+                {t('qaStressTesting')}
               </button>
               <button
                 type="button"
@@ -123,13 +132,13 @@ export const SystemPromptTesterSection: React.FC = () => {
                     : 'text-gray-400 hover:text-white hover:bg-gray-800'
                 }`}
               >
-                Generate Ideal Examples
+                {t('generateIdealExamples')}
               </button>
             </div>
             <p className="mt-3 text-xs text-gray-400">
               {generationMode === 'test'
-                ? 'Generates edge cases, complex tasks, and standard inputs to find weaknesses.'
-                : 'Generates high-quality, impressive examples to demonstrate the best usage of the system.'}
+                ? t('qaStressTestingDescription')
+                : t('generateIdealExamplesDescription')}
             </p>
           </div>
 
@@ -145,8 +154,8 @@ export const SystemPromptTesterSection: React.FC = () => {
                 <>
                   <CommandLineIcon className="w-5 h-5 mr-2" />
                   {generationMode === 'test'
-                    ? 'Generate Test Cases'
-                    : 'Generate Examples'}
+                    ? t('generateTestCases')
+                    : t('generateExamples')}
                 </>
               )}
             </button>
@@ -161,7 +170,7 @@ export const SystemPromptTesterSection: React.FC = () => {
 
           {error && (
             <div className="p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-red-300 text-sm">
-              <p className="font-semibold mb-1">Error</p>
+              <p className="font-semibold mb-1">{t('error')}</p>
               <p>{error}</p>
             </div>
           )}
@@ -172,8 +181,8 @@ export const SystemPromptTesterSection: React.FC = () => {
         <Card
           title={
             generationMode === 'test'
-              ? 'Recommended Test Inputs'
-              : 'Ideal User Examples'
+              ? t('recommendedTestInputs')
+              : t('idealUserExamples')
           }
           className="bg-gray-850 animate-slide-up"
         >
@@ -184,7 +193,7 @@ export const SystemPromptTesterSection: React.FC = () => {
             <button
               onClick={handleCopy}
               className="absolute top-4 right-4 p-2 bg-gray-800 hover:bg-gray-700 rounded-lg text-gray-400 hover:text-white transition-all border border-gray-700 shadow-md"
-              title="Copy to clipboard"
+              title={t('copyToClipboardTooltip')}
             >
               {copied ? (
                 <CheckIcon className="w-4 h-4 text-green-400" />

@@ -6,6 +6,7 @@ import {
 } from '@/constants/promptData';
 import type { ContentBlock } from '@/types';
 import { AccordionItem } from '@/components/ui/Accordion';
+import type { Language } from '@/components/layout/LanguageSelector';
 
 const renderContentNode = (node: string | React.ReactNode): React.ReactNode => {
   if (typeof node === 'string') {
@@ -18,7 +19,11 @@ const renderContentNode = (node: string | React.ReactNode): React.ReactNode => {
   return node;
 };
 
-export const IntroductionSection: React.FC = () => {
+interface IntroductionSectionProps {
+  language?: Language;
+}
+
+export const IntroductionSection: React.FC<IntroductionSectionProps> = ({ language = 'ar' }) => {
   return (
     <div className="space-y-10 animate-fade-in max-w-5xl mx-auto">
       <header className="pb-8 border-b border-gray-700/50">

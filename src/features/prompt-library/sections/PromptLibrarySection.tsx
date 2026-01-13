@@ -8,12 +8,15 @@ import {
   CheckIcon,
   ArrowUpRightIcon,
 } from '@/components/ui/Icons';
+import { useTranslation, type Language } from '@/hooks/useLanguage';
 
 const TemplateCard: React.FC<{
   template: PromptTemplate;
   onUseTemplate: (template: string) => void;
-}> = ({ template, onUseTemplate }) => {
+  language: Language;
+}> = ({ template, onUseTemplate, language }) => {
   const [copied, setCopied] = useState(false);
+  const { t } = useTranslation(language);
 
   const handleCopy = useCallback(() => {
     navigator.clipboard
@@ -42,7 +45,7 @@ const TemplateCard: React.FC<{
 
         <div className="mb-5 bg-gray-900/50 p-3 rounded-xl border border-gray-800">
           <p className="text-xs font-semibold text-blue-300 mb-2 uppercase">
-            Variables
+            {t('variables')}
           </p>
           <ul className="space-y-1.5 text-xs text-gray-400">
             {template.variables.map((v) => (
@@ -60,8 +63,8 @@ const TemplateCard: React.FC<{
           <button
             onClick={handleCopy}
             className="absolute top-2 right-2 p-1.5 bg-gray-800/80 hover:bg-gray-700 rounded-lg text-gray-400 hover:text-white transition-colors border border-gray-700/50"
-            title="Copy Template"
-            aria-label="Copy prompt template to clipboard"
+            title={t('copyTemplate')}
+            aria-label={t('copyTemplateAriaLabel')}
           >
             {copied ? (
               <CheckIcon className="w-3.5 h-3.5 text-green-400" />
@@ -79,7 +82,7 @@ const TemplateCard: React.FC<{
           onClick={() => onUseTemplate(template.template)}
           className="w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-semibold rounded-xl text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-blue-500 transition-all shadow-lg hover:shadow-blue-500/25"
         >
-          Use in Playground
+          {t('useInPlaygroundLibrary')}
           <ArrowUpRightIcon className="w-4 h-4" />
         </button>
       </div>
@@ -89,17 +92,18 @@ const TemplateCard: React.FC<{
 
 export const PromptLibrarySection: React.FC<{
   onUseTemplate: (template: string) => void;
-}> = ({ onUseTemplate }) => {
+  language?: Language;
+}> = ({ onUseTemplate, language = 'ar' }) => {
+  const { t } = useTranslation(language);
+
   return (
     <div className="space-y-10 animate-fade-in max-w-6xl mx-auto">
       <header className="pb-8 border-b border-gray-700/50">
         <h1 className="text-5xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-500 pb-2">
-          Prompt Template Library
+          {t('promptLibraryTitle')}
         </h1>
         <p className="mt-4 text-lg text-gray-400 max-w-3xl leading-relaxed">
-          A curated collection of high-quality, structured prompt templates to
-          kickstart your tasks. Choose a template, customize the variables, and
-          get superior results from the AI.
+          {t('promptLibraryDescription')}
         </p>
       </header>
 
@@ -116,6 +120,7 @@ export const PromptLibrarySection: React.FC<{
                   key={template.title}
                   template={template}
                   onUseTemplate={onUseTemplate}
+                  language={language}
                 />
               ))}
             </div>
