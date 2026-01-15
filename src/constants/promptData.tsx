@@ -154,9 +154,9 @@ export const understandingPromptsContent: ContentBlock = {
           </p>
           <p className="mt-2">
             <span className="font-semibold text-blue-400">Clarity</span> means
-            using precise vocabulary and structuring your sentences so
-            there&apos;s only one likely interpretation. Clearly state what you
-            want the AI to *do* (the task) and *what* the output should be.
+            using precise vocabulary and structuring your sentences so there&apos;s
+            only one likely interpretation. Clearly state what you want the AI
+            to *do* (the task) and *what* the output should be.
           </p>
           <p className="mt-2">
             <span className="font-semibold text-blue-400">Specificity</span>{' '}
@@ -231,15 +231,14 @@ export const promptTypesContent: ContentBlock[] = [
     content: (
       <>
         <p>
-          This relies on the model&apos;s pre-trained knowledge to understand
-          and execute the task.
+          This relies on the model&apos;s pre-trained knowledge to understand and
+          execute the task.
         </p>
         <p className="mt-2">
           <span className="font-semibold text-blue-400">Examples:</span> Idea
-          generation (e.g., &ldquo;Generate creative ideas for a sustainable
-          product&rdquo;), summarization (&ldquo;Summarize this article about
-          renewable energy&rdquo;), or translation (&ldquo;Translate
-          &apos;Hello, world&apos; to French&rdquo;).
+          generation (e.g., &quot;Generate creative ideas for a sustainable
+          product&quot;), summarization (&quot;Summarize this article about renewable
+          energy&quot;), or translation (&quot;Translate &apos;Hello, world&apos; to French&quot;).
         </p>
       </>
     ),
@@ -250,15 +249,14 @@ export const promptTypesContent: ContentBlock[] = [
     details: (
       <>
         <p>
-          This relies on the model&apos;s pre-trained knowledge to understand
-          and execute the task.
+          This relies on the model&apos;s pre-trained knowledge to understand and
+          execute the task.
         </p>
         <p className="mt-2">
           <span className="font-semibold text-blue-400">Examples:</span> Idea
-          generation (e.g., &ldquo;Generate creative ideas for a sustainable
-          product&rdquo;), summarization (&ldquo;Summarize this article about
-          renewable energy&rdquo;), or translation (&ldquo;Translate
-          &apos;Hello, world&apos; to French&rdquo;).
+          generation (e.g., &quot;Generate creative ideas for a sustainable
+          product&quot;), summarization (&quot;Summarize this article about renewable
+          energy&quot;), or translation (&quot;Translate &apos;Hello, world&apos; to French&quot;).
         </p>
       </>
     ),
@@ -731,8 +729,8 @@ export const strategiesContent: ContentBlock[] = [
           <span className="font-semibold text-blue-400">
             Analyze outputs and refine:
           </span>{' '}
-          Pay attention to what the AI generates. If it&apos;s not what you
-          want, revise your prompt and try again.
+          Pay attention to what the AI generates. If it&apos;s not what you want,
+          revise your prompt and try again.
         </li>
       </ul>
     ),
@@ -765,8 +763,8 @@ export const strategiesContent: ContentBlock[] = [
           <span className="font-semibold text-blue-400">
             Analyze outputs and refine:
           </span>{' '}
-          Pay attention to what the AI generates. If it&apos;s not what you
-          want, revise your prompt and try again.
+          Pay attention to what the AI generates. If it&apos;s not what you want,
+          revise your prompt and try again.
         </li>
       </ul>
     ),
@@ -818,10 +816,9 @@ export const furtherGuidanceContent: ContentBlock = {
   content: (
     <p>
       For more in-depth strategies and best practices, especially within the
-      Google Cloud ecosystem, exploring resources like the &ldquo;Five Best
-      Practices for Prompt Engineering on Google Cloud&rdquo; can provide
-      valuable insights. (Note: This is a general reference, specific links may
-      vary over time).
+      Google Cloud ecosystem, exploring resources like the &quot;Five Best Practices
+      for Prompt Engineering on Google Cloud&quot; can provide valuable insights.
+      (Note: This is a general reference, specific links may vary over time).
     </p>
   ),
   id: 'further-guidance',
@@ -829,10 +826,9 @@ export const furtherGuidanceContent: ContentBlock = {
   description: (
     <p>
       For more in-depth strategies and best practices, especially within the
-      Google Cloud ecosystem, exploring resources like the &ldquo;Five Best
-      Practices for Prompt Engineering on Google Cloud&rdquo; can provide
-      valuable insights. (Note: This is a general reference, specific links may
-      vary over time).
+      Google Cloud ecosystem, exploring resources like the &quot;Five Best Practices
+      for Prompt Engineering on Google Cloud&quot; can provide valuable insights.
+      (Note: This is a general reference, specific links may vary over time).
     </p>
   ),
 };

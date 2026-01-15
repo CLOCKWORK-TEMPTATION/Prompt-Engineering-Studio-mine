@@ -13,33 +13,28 @@ import type {
 } from '@/types';
 import {
   PencilSquareIcon,
-  ClipboardIcon,
-  CheckIcon,
-  TrashIcon,
   LinkIcon,
   ShareIcon,
-  LightBulbIcon,
+  TrashIcon,
   ClockIcon,
   ExclamationTriangleIcon,
   InformationCircleIcon,
   ChatBubbleLeftRightIcon,
   SparklesIcon,
+  LightBulbIcon,
 } from '@/components/ui/Icons';
 import { useTranslation, type Language } from '@/hooks/useLanguage';
 
 import {
-  VariantTabs,
   CompactVariantTabs,
   type PromptVariant as VariantTabsPromptVariant,
 } from '@/features/optimizer/components/VariantTabs';
 import {
   DiagnosisCard,
-  CompactDiagnosisCard,
   type DiagnosisData,
 } from '@/features/optimizer/components/DiagnosisCard';
 import {
   DiffView,
-  InlineComparison,
 } from '@/features/optimizer/components/DiffView';
 const LOCAL_STORAGE_KEY = 'optimizerHistory';
 
@@ -177,8 +172,16 @@ export const UserPromptOptimizerSection: React.FC<
 
     const diagnosis = optimizerResponse.diagnosis;
 
+    // Normalize qualityScore - support both camelCase and snake_case
+    const qualityScore =
+      (analysisData.qualityScore as number | undefined) ??
+      (analysisData.quality_score as number | undefined) ??
+      70;
+
     return {
-      qualityScore: (analysisData.qualityScore as number | undefined) ?? 70,
+      qualityScore,
+      clarityScore: analysisData.clarityScore as number | undefined,
+      specificityScore: analysisData.specificityScore as number | undefined,
       missingInfo: diagnosis?.missingInfo?.map((info, idx) => ({
         type: 'Info',
         description: info,
@@ -191,7 +194,7 @@ export const UserPromptOptimizerSection: React.FC<
       privacyWarnings: diagnosis?.privacyWarnings ?? [],
       assumptions: Array.isArray(analysisData.assumptions) ? analysisData.assumptions as string[] : [],
     } as DiagnosisData;
-  }, [optimizerResponse]);
+  }, [optimizerResponse, t]);
 
   // Get current selected prompt text
   const currentPrompt = React.useMemo(() => {
@@ -350,196 +353,6 @@ export const UserPromptOptimizerSection: React.FC<
       onUseInPlayground(currentPrompt);
     }
   }, [currentPrompt, onUseInPlayground]);
-
-  // Render analysis section
-  const renderAnalysis = () => {
-    if (!optimizerResponse?.analysis) return null;
-
-    let analysisData: Record<string, unknown>;
-    try {
-      if (typeof optimizerResponse.analysis === 'string') {
-        analysisData = JSON.parse(optimizerResponse.analysis);
-      } else {
-        analysisData = optimizerResponse.analysis;
-      }
-    } catch {
-      // Fallback to string analysis
-      return (
-        <Card title={t('analysisAndDiagnosis')}>
-          <div className="text-sm text-gray-300 whitespace-pre-line">
-            {String(optimizerResponse.analysis)}
-          </div>
-        </Card>
-      );
-    }
-
-    const diagnosis = optimizerResponse.diagnosis;
-
-    // Normalize qualityScore - support both camelCase and snake_case
-    const qualityScore =
-      (analysisData.qualityScore as number | undefined) ??
-      (analysisData.quality_score as number | undefined) ??
-      70;
-
-    return (
-      <Card title="Analysis & Diagnosis" className="bg-gray-850">
-        <div className="space-y-4">
-          {/* Quality Score */}
-          <div className="flex items-center gap-4">
-            <div className="text-sm text-gray-400">{t('qualityScore')}:</div>
-            <div
-              className={`px-3 py-1 rounded-full text-sm font-bold ${
-                qualityScore >= 80
-                  ? 'bg-emerald-500/20 text-emerald-300'
-                  : qualityScore >= 60
-                    ? 'bg-yellow-500/20 text-yellow-300'
-                    : 'bg-red-500/20 text-red-300'
-              }`}
-            >
-              {qualityScore}/100
-            </div>
-            <div className="text-xs text-gray-500">
-              {String(analysisData.language)} • {String(analysisData.intent)}
-            </div>
-          </div>
-
-          {/* Privacy Warnings */}
-          {diagnosis?.privacyWarnings && diagnosis.privacyWarnings.length > 0 && (
-            <div className="p-3 bg-red-500/10 border border-red-500/30 rounded-lg">
-              <div className="flex items-start gap-2">
-                <ExclamationTriangleIcon className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
-                <div className="flex-1">
-                  <div className="text-sm font-semibold text-red-300 mb-1">
-                    {t('privacyAndSecurityAlerts')}
-                  </div>
-                  <div className="text-xs text-red-200 space-y-1">
-                    {diagnosis.privacyWarnings.map((warning, idx) => (
-                      <div key={idx}>{warning}</div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Missing Info */}
-          {diagnosis?.missingInfo && diagnosis.missingInfo.length > 0 && (
-            <div className="p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg">
-              <div className="flex items-start gap-2">
-                <InformationCircleIcon className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
-                <div className="flex-1">
-                  <div className="text-sm font-semibold text-amber-300 mb-1">
-                    {t('potentiallyMissingInfo')}
-                  </div>
-                  <ul className="text-xs text-amber-200 space-y-1">
-                    {diagnosis.missingInfo.map((info, idx) => (
-                      <li key={idx}>• {info}</li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Clarifying Questions */}
-          {diagnosis?.clarifyingQuestions &&
-            diagnosis.clarifyingQuestions.length > 0 && (
-              <div className="p-3 bg-blue-500/10 border border-blue-500/30 rounded-lg">
-                <div className="flex items-start gap-2">
-                  <ChatBubbleLeftRightIcon className="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5" />
-                  <div className="flex-1">
-                    <div className="text-sm font-semibold text-blue-300 mb-1">
-                      {t('clarifyingQuestions')}
-                    </div>
-                    <ul className="text-xs text-blue-200 space-y-1">
-                      {diagnosis.clarifyingQuestions.map((question, idx) => (
-                        <li key={idx}>• {question}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            )}
-
-          {/* Assumptions */}
-          {Array.isArray(analysisData.assumptions) &&
-            analysisData.assumptions.length > 0 && (
-              <div className="p-3 bg-gray-700/30 border border-gray-600/30 rounded-lg">
-                <div className="text-sm font-semibold text-gray-300 mb-2">
-                  {t('assumptionsMade')}
-                </div>
-                <ul className="text-xs text-gray-400 space-y-1">
-                  {analysisData.assumptions.map((assumption, idx) => (
-                    <li key={idx}>• {String(assumption)}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-        </div>
-      </Card>
-    );
-  };
-
-  // Render variant selector
-  const renderVariantSelector = () => {
-    if (!optimizerResponse) return null;
-
-    // Variant display configuration
-    const VARIANT_CONFIG: Record<
-      PromptVariant,
-      { label: string; color: string; description: string }
-    > = {
-      generic: {
-        label: t('genericVariant'),
-        color: 'teal',
-        description: t('genericWorksMost'),
-      },
-      chatgpt: {
-        label: t('chatgptVariant'),
-        color: 'emerald',
-        description: t('chatgptOptimized'),
-      },
-      claude: {
-        label: t('claudeVariant'),
-        color: 'amber',
-        description: t('claudeOptimized'),
-      },
-      gemini: {
-        label: t('geminiVariant'),
-        color: 'blue',
-        description: t('geminiOptimized'),
-      },
-      kimi: {
-        label: t('kimiVariant'),
-        color: 'purple',
-        description: t('kimiOptimized'),
-      },
-    };
-
-    return (
-      <div className="flex flex-wrap gap-2 mb-4">
-        {availableVariants.map((variant) => {
-          const config = VARIANT_CONFIG[variant];
-          const isActive = selectedVariant === variant;
-
-          return (
-            <button
-              key={variant}
-              onClick={() => setSelectedVariant(variant)}
-              className={`px-3 py-2 text-xs font-medium rounded-lg border transition-all ${
-                isActive
-                  ? `bg-${config.color}-600 text-white border-${config.color}-500`
-                  : `bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700 hover:border-${config.color}-500/50`
-              }`}
-              title={config.description}
-            >
-              {config.label}
-            </button>
-          );
-        })}
-      </div>
-    );
-  };
 
   // Get display text for history item
   const getHistoryItemDisplayText = (item: OptimizerHistoryItem): string => {
@@ -707,7 +520,7 @@ export const UserPromptOptimizerSection: React.FC<
               <CompactVariantTabs
                 variants={variantTabsData}
                 onVariantChange={(variant) => {
-                  setSelectedVariant(variant.platform);
+                  setSelectedVariant(variant.platform as PromptVariant);
                 }}
                 language={language}
               />

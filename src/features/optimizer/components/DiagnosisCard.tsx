@@ -4,6 +4,8 @@ import {
   ChevronUpIcon,
   LightBulbIcon,
   BeakerIcon,
+  ExclamationTriangleIcon,
+  InformationCircleIcon,
 } from '@/components/ui/Icons';
 import { useTranslation, type Language } from '@/hooks/useLanguage';
 
@@ -24,6 +26,8 @@ export interface DiagnosisData {
   clarifyingQuestions?: ClarifyingQuestion[];
   privacyWarnings?: string[];
   qualityScore?: number;
+  clarityScore?: number;
+  specificityScore?: number;
   assumptions?: string[];
 }
 
@@ -127,17 +131,40 @@ export const DiagnosisCard: React.FC<DiagnosisCardProps> = ({
           </div>
 
           {scoreConfig && diagnosis.qualityScore !== undefined && (
-            <div
-              className={`px-4 py-2 rounded-xl border-2 ${scoreConfig.bg} ${scoreConfig.border}`}
-            >
-              <div className="text-center">
-                <div className={`text-2xl font-bold ${scoreConfig.color}`}>
-                  {diagnosis.qualityScore}
-                </div>
-                <div className="text-xs text-gray-400 uppercase tracking-wide">
-                  {t('score')}
+            <div className="flex flex-col gap-3">
+              <div
+                className={`px-4 py-2 rounded-xl border-2 ${scoreConfig.bg} ${scoreConfig.border}`}
+              >
+                <div className="text-center">
+                  <div className={`text-2xl font-bold ${scoreConfig.color}`}>
+                    {diagnosis.qualityScore}
+                  </div>
+                  <div className="text-xs text-gray-400 uppercase tracking-wide">
+                    {t('score')}
+                  </div>
                 </div>
               </div>
+              {/* Breakdown metrics */}
+              {(diagnosis.clarityScore !== undefined || diagnosis.specificityScore !== undefined) && (
+                <div className="text-xs text-gray-400 space-y-1.5 w-full">
+                  {diagnosis.clarityScore !== undefined && (
+                    <div className="flex justify-between items-center gap-4">
+                      <span>{t('clarity')}</span>
+                      <span className={`font-semibold ${getScoreColor(diagnosis.clarityScore).color}`}>
+                        {diagnosis.clarityScore}
+                      </span>
+                    </div>
+                  )}
+                  {diagnosis.specificityScore !== undefined && (
+                    <div className="flex justify-between items-center gap-4">
+                      <span>{t('specificity')}</span>
+                      <span className={`font-semibold ${getScoreColor(diagnosis.specificityScore).color}`}>
+                        {diagnosis.specificityScore}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -312,7 +339,7 @@ export const DiagnosisCard: React.FC<DiagnosisCardProps> = ({
                 <div className="p-4 bg-red-500/5 border border-red-500/20 rounded-xl space-y-2">
                   {diagnosis.privacyWarnings.map((warning, index) => (
                     <div key={index} className="flex items-start gap-2">
-                      <div className="w-1.5 h-1.5 rounded-full bg-red-400 mt-1.5 flex-shrink-0" />
+                      <ExclamationTriangleIcon className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
                       <p className="text-sm text-red-200">{warning}</p>
                     </div>
                   ))}
@@ -437,14 +464,20 @@ export const CompactDiagnosisCard: React.FC<CompactDiagnosisCardProps> = ({
         </div>
         <div className="flex gap-2">
           {diagnosis.missingInfo && diagnosis.missingInfo.length > 0 && (
-            <div className="px-2 py-1 bg-orange-500/10 rounded text-xs text-orange-300">
-              {diagnosis.missingInfo.length} {t('missing')}
+            <div className="px-2 py-1 bg-orange-500/10 rounded text-xs text-orange-300 flex items-center gap-1">
+              <InformationCircleIcon className="w-3 h-3" />
+              <span>
+                {diagnosis.missingInfo.length} {t('missing')}
+              </span>
             </div>
           )}
           {diagnosis.privacyWarnings &&
             diagnosis.privacyWarnings.length > 0 && (
-              <div className="px-2 py-1 bg-red-500/10 rounded text-xs text-red-300">
-                {diagnosis.privacyWarnings.length} {t('warnings')}
+              <div className="px-2 py-1 bg-red-500/10 rounded text-xs text-red-300 flex items-center gap-1">
+                <ExclamationTriangleIcon className="w-3 h-3" />
+                <span>
+                  {diagnosis.privacyWarnings.length} {t('warnings')}
+                </span>
               </div>
             )}
         </div>

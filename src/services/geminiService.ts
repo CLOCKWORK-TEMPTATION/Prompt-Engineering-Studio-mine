@@ -5,13 +5,20 @@ import {
   parseOptimizerResponse,
 } from '@/types';
 
-// Always use process.env.API_KEY directly for initialization as per guidelines.
-const ai = new GoogleGenAI({
-  apiKey: import.meta.env.VITE_API_KEY || '',
-});
-
 // Using 'gemini-3-pro-preview' for advanced reasoning/prompt engineering tasks.
 const MODEL_NAME = 'gemini-3-pro-preview';
+
+/**
+ * Helper to get the Gemini Client instance.
+ * Initializes lazily to prevent app crashes at startup if the key is missing.
+ */
+const getGeminiClient = () => {
+  const apiKey = process.env.API_KEY;
+  if (!apiKey) {
+    throw new Error('API Key is missing. Please check your .env file.');
+  }
+  return new GoogleGenAI({ apiKey });
+};
 
 /**
  * System instruction for the User Prompt Optimizer
@@ -28,7 +35,7 @@ const OPTIMIZER_SYSTEM_INSTRUCTION = `You are a User Prompt Optimizer, an expert
 **YOUR TASK:**
 Analyze the user's input prompt and provide:
 1. Diagnosis of missing information and potential issues
-2. Quality analysis with scoring
+2. Quality analysis with scoring (Overall, Clarity, Specificity)
 3. Five optimized variants for different AI platforms
 
 **DETECTION REQUIREMENTS:**
@@ -69,6 +76,8 @@ Respond ONLY with this exact JSON structure (no markdown code blocks):
   },
   "analysis": {
     "qualityScore": 0-100,
+    "clarityScore": 0-100,
+    "specificityScore": 0-100,
     "intent": "detected primary intent",
     "language": "detected language (e.g., 'Arabic', 'English', 'Mixed')",
     "assumptions": ["list of assumptions made during optimization"]
@@ -178,6 +187,7 @@ export const optimizeUserPromptStructured = async (
   }
 
   try {
+    const ai = getGeminiClient();
     // Generate content using the structured system prompt
     const response: GenerateContentResponse = await ai.models.generateContent({
       model: MODEL_NAME,
@@ -187,6 +197,8 @@ export const optimizeUserPromptStructured = async (
         temperature: 0.7,
         topK: 40,
         topP: 0.95,
+        // Enable thinking for better reasoning and analysis
+        thinkingConfig: { thinkingBudget: 2048 },
       },
     });
 
@@ -258,6 +270,7 @@ export const generateEnhancedPrompt = async (
   }
 
   try {
+    const ai = getGeminiClient();
     // Generate content using the recommended model and structure.
     const response: GenerateContentResponse = await ai.models.generateContent({
       model: MODEL_NAME,
@@ -316,6 +329,7 @@ Please format your response as a structured Markdown list. For each suggested Us
 Please format your response as a structured Markdown list. For each suggested User Prompt, provide a brief rationale in parentheses explaining *why* this is a great example usage.`;
 
   try {
+    const ai = getGeminiClient();
     const response: GenerateContentResponse = await ai.models.generateContent({
       model: MODEL_NAME,
       contents: `System Prompt to Analyze:\n"""\n${systemPrompt}\n"""`,
@@ -343,9 +357,9 @@ Please format your response as a structured Markdown list. For each suggested Us
 const handleGeminiError = (error: unknown) => {
   console.error('Error calling Gemini API:', error);
   if (error instanceof Error) {
-    if (error.message.includes('API key not valid')) {
+    if (error.message.includes('API key not valid') || error.message.includes('API Key')) {
       throw new Error(
-        'Invalid API Key. Please check your environment configuration.',
+        'Invalid or missing API Key. Please check your environment configuration.',
       );
     }
     if (

@@ -136,6 +136,8 @@ export interface Translations {
   promptAnalysis: string;
   aiPoweredDiagnosis: string;
   score: string;
+  clarity: string;
+  specificity: string;
   missingInformation: string;
   itemsIdentified: string;
   priority: string;
@@ -405,6 +407,8 @@ export const translations: Record<Language, Translations> = {
     promptAnalysis: 'Prompt Analysis',
     aiPoweredDiagnosis: 'AI-powered diagnosis and recommendations',
     score: 'Score',
+    clarity: 'Clarity',
+    specificity: 'Specificity',
     missingInformation: 'Missing Information',
     itemsIdentified: 'item(s) identified',
     priority: 'Priority',
@@ -683,6 +687,8 @@ export const translations: Record<Language, Translations> = {
     promptAnalysis: 'تحليل الأمر',
     aiPoweredDiagnosis: 'تشخيص وتوصيات مدعومة بالذكاء الاصطناعي',
     score: 'الدرجة',
+    clarity: 'الوضوح',
+    specificity: 'التحديد',
     missingInformation: 'المعلومات المفقودة',
     itemsIdentified: 'عناصر تم تحديدها',
     priority: 'الأولوية',

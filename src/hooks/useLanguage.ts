@@ -1,7 +1,8 @@
 import React from 'react';
 import type { Language } from '@/constants/translations';
-import { getDirection } from '@/constants/translations';
-export { useTranslation, type Language } from './useTranslation';
+import { translations, getDirection } from '@/constants/translations';
+
+export type { Language };
 
 export function useLanguage(
   initial: Language = 'ar',
@@ -23,4 +24,14 @@ export function useLanguage(
   }, [language]);
 
   return [language, setLanguage];
+}
+
+export function useTranslation(language: Language) {
+  return {
+    t: (key: keyof typeof translations.ar): string =>
+      translations[language][key],
+    language,
+    direction: getDirection(language) as 'ltr' | 'rtl',
+    isArabic: language === 'ar',
+  };
 }
